@@ -1,0 +1,50 @@
+body {
+    font-family: 'Courier New', Courier, monospace;
+    overflow-x: hidden;
+    margin: 0;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  #timerDisplay {
+    font-size: clamp(4rem, 11vw, 6.15rem);
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+    max-width: 90%;
+  }
+
+  #dashboardModal {
+    max-width: 90%;
+    overflow-y: auto;
+  }
+
+  @media (min-width: 768px) {
+    #dashboardModal {
+      max-width: 50%;
+      padding: 20px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    #dashboardModal {
+      max-width: 40%;
+      padding: 16px;
+    }
+  }
+
+  @media (max-width: 393px) {
+    #dashboardModal {
+      max-width: 100%;
+      padding: 10px;
+    }
+    .text-xl { font-size: 1.25rem; }
+    .text-lg { font-size: 1rem; }
+    .space-x-4 { gap: 0.5rem; }
+    #timerDisplay { font-size: 4.5rem; }
+  }
