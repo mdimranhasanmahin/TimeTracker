@@ -16,6 +16,24 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="styles.css">
+  <style>
+    @media (min-width: 768px) {
+    #dashboardModal {
+      max-width: 50%;
+      padding: 20px;
+    }
+  }
+  @media (max-width: 393px) {
+    #dashboardModal {
+      max-width: 100%;
+      padding: 10px;
+    }
+    .text-xl { font-size: 1.25rem; }
+    .text-lg { font-size: 1rem; }
+    .space-x-4 { gap: 0.5rem; }
+    #timerDisplay { font-size: 4.5rem; }
+  }
+  </style>
 </head>
 <body class="bg-black text-white flex flex-col items-center justify-center h-screen relative">
   <!-- Dashboard Button -->

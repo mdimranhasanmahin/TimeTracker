@@ -24,12 +24,7 @@ body {
     overflow-y: auto;
   }
 
-  @media (min-width: 768px) {
-    #dashboardModal {
-      max-width: 50%;
-      padding: 20px;
-    }
-  }
+  
 
   @media (min-width: 1024px) {
     #dashboardModal {
@@ -38,13 +33,4 @@ body {
     }
   }
 
-  @media (max-width: 393px) {
-    #dashboardModal {
-      max-width: 100%;
-      padding: 10px;
-    }
-    .text-xl { font-size: 1.25rem; }
-    .text-lg { font-size: 1rem; }
-    .space-x-4 { gap: 0.5rem; }
-    #timerDisplay { font-size: 4.5rem; }
-  }
+  
