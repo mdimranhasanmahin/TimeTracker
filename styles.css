@@ -10,15 +10,7 @@ body {
     padding: 0;
   }
 
-  #timerDisplay {
-    font-size: clamp(4rem, 11vw, 6.15rem);
-    text-align: center;
-    white-space: nowrap;
-    overflow: hidden;
-    width: 100%;
-    max-width: 90%;
-  }
-
+ 
   #dashboardModal {
     max-width: 90%;
     overflow-y: auto;
@@ -26,11 +18,6 @@ body {
 
   
 
-  @media (min-width: 1024px) {
-    #dashboardModal {
-      max-width: 40%;
-      padding: 16px;
-    }
-  }
+ 
 
   

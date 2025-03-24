@@ -11,18 +11,26 @@
   <meta property="og:title" content="Focus Timer - Achieve More with Better Time Management">
   <meta property="og:description" content="Manage your study sessions effectively with Study Timer. Stay productive!">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="icon" type="x-icon" loading="lazy" href="hii.webp" alt="Study Timer App Screenshot" />
-  <title>TimeTracker - Online Timer for Work, Study & Tasks</title>
+  <link rel="icon" type="x-icon" loading="lazy" href="time concept or clock business lotgo template (1).jpg" alt="Time Tracker App Screenshot" />
+  <title>Time Tracker - Online Timer for Work, Study & Tasks</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="styles.css">
   <style>
-    @media (min-width: 768px) {
+      @media (min-width: 768px) {
     #dashboardModal {
       max-width: 50%;
       padding: 20px;
     }
   }
+
+  @media (min-width: 1024px) {
+    #dashboardModal {
+      max-width: 40%;
+      padding: 16px;
+    }
+  }
+
   @media (max-width: 393px) {
     #dashboardModal {
       max-width: 100%;
@@ -33,6 +41,15 @@
     .space-x-4 { gap: 0.5rem; }
     #timerDisplay { font-size: 4.5rem; }
   }
+  #timerDisplay {
+    font-size: clamp(4rem, 11vw, 6.15rem);
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+    max-width: 90%;
+  }
+
   </style>
 </head>
 <body class="bg-black text-white flex flex-col items-center justify-center h-screen relative">
@@ -44,12 +61,12 @@
 
   <!-- Timer Section -->
   <div class="text-center space-y-8">
-    <h1 class="text-3xl font-bold">Time Tracker</h1>
+    <h1 class="text-3xl font-bold">Focus Timer</h1>
     <div id="timerDisplay" class="text-8xl font-bold">00:00:00</div>
     <div class="space-x-4">
       <button id="setTimeBtn" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xl rounded">Set Time</button>
       <button id="startBtn" class="px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-bold text-xl rounded">Start</button>
-      <button id="restartBtn" class="px-4 py-3  bg-emerald-400 hover:bg-emerald-500 text-white font-bold rounded">
+      <button id="restartBtn" class="px-4 py-3 bg-emerald-400 hover:bg-emerald-500 text-white font-bold rounded">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rotate-ccw"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
       </button>
     </div>
@@ -84,7 +101,7 @@
           <h3 class="text-lg font-bold">Daily Average</h3>
           <p id="dailyAverage" class="text-4xl font-bold">0 Min</p>
         </div>
-      </div>
+      </div> 
       <div>
         <h3 class="text-lg font-bold mb-2">Monthly Study</h3>
         <canvas id="monthlyChart"></canvas>
@@ -94,8 +111,12 @@
       </div>
     </div>
   </div>
+
   <!-- Sound Alarm -->
-  <audio id="alarmSound" src="bell-ring-01.wav" preload="none"></audio>
-    <script src="script.js" defer></script>
+  <audio id="alarmSound" src="bell-ring-01.wav" preload="auto"></audio>
+  <script src="script.js" defer></script>
+
+
+ 
 </body>
 </html>
