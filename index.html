@@ -16,41 +16,6 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="styles.css">
-  <style>
-      @media (min-width: 768px) {
-    #dashboardModal {
-      max-width: 50%;
-      padding: 20px;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    #dashboardModal {
-      max-width: 40%;
-      padding: 16px;
-    }
-  }
-
-  @media (max-width: 393px) {
-    #dashboardModal {
-      max-width: 100%;
-      padding: 10px;
-    }
-    .text-xl { font-size: 1.25rem; }
-    .text-lg { font-size: 1rem; }
-    .space-x-4 { gap: 0.5rem; }
-    #timerDisplay { font-size: 4.5rem; }
-  }
-  #timerDisplay {
-    font-size: clamp(4rem, 11vw, 6.15rem);
-    text-align: center;
-    white-space: nowrap;
-    overflow: hidden;
-    width: 100%;
-    max-width: 90%;
-  }
-
-  </style>
 </head>
 <body class="bg-black text-white flex flex-col items-center justify-center h-screen relative">
   <!-- Dashboard Button -->
@@ -61,7 +26,7 @@
 
   <!-- Timer Section -->
   <div class="text-center space-y-8">
-    <h1 class="text-3xl font-bold">Focus Timer</h1>
+    <h1 class="text-3xl font-bold">Time Tracker</h1>
     <div id="timerDisplay" class="text-8xl font-bold">00:00:00</div>
     <div class="space-x-4">
       <button id="setTimeBtn" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xl rounded">Set Time</button>
@@ -115,8 +80,6 @@
   <!-- Sound Alarm -->
   <audio id="alarmSound" src="bell-ring-01.wav" preload="auto"></audio>
   <script src="script.js" defer></script>
-
-
  
 </body>
 </html>
