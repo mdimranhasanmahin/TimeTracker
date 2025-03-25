@@ -16,8 +16,22 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="styles.css">
+  <style>
+    #realTime {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        font-size: 16px;
+        font-family: monospace;
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+    }
+</style>
 </head>
 <body class="bg-black text-white flex flex-col items-center justify-center h-screen relative">
+  
   <!-- Dashboard Button -->
   <button id="dashboardBtn" class="absolute top-4 left-4 px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white font-bold rounded">Dashboard</button>
 
@@ -76,10 +90,42 @@
       </div>
     </div>
   </div>
+  <button id="robotBtn" class="fixed bottom-4 right-4 bg-blue-600 hover:bg-purple-700 p-4 rounded-full shadow-lg z-20">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2a4 4 0 018 0v2m1 4H4a1 1 0 01-1-1V9a1 1 0 011-1h3V6a4 4 0 118 0v2h3a1 1 0 011 1v11a1 1 0 01-1 1z"/></svg>
+  </button>
 
+  <!-- ChatGPT iFrame -->
+  <div id="chatContainer" class="hidden fixed bottom-20 right-4 w-80 h-96 bg-gray-900 rounded-lg shadow-lg overflow-hidden z-30">
+    <div class="flex justify-between items-center bg-blue-700 p-2">
+      <span class="text-white font-bold">Chat Assistant</span>
+      <button id="closeChat" class="text-white text-xl">&times;</button>
+    </div>
+    <iframe id="chatIframe" src="https://chat.openai.com/" class="w-full h-full border-none"></iframe>
+  </div>
   <!-- Sound Alarm -->
   <audio id="alarmSound" src="bell-ring-01.wav" preload="auto"></audio>
   <script src="script.js" defer></script>
- 
+  <script>
+    const robotBtn = document.getElementById('robotBtn');
+    const chatContainer = document.getElementById('chatContainer');
+    const closeChat = document.getElementById('closeChat');
+
+    robotBtn.addEventListener('click', () => {
+      chatContainer.classList.toggle('hidden');
+    });
+
+    closeChat.addEventListener('click', () => {
+      chatContainer.classList.add('hidden');
+    });
+     function updateRealTime() {
+            const now = new Date();
+            const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+            const timeString = now.toLocaleTimeString();
+            const dateString = now.toLocaleDateString('en-US', options);
+            document.getElementById("realTime").textContent = `${timeString} | ${dateString}`;
+        }
+        setInterval(updateRealTime, 1000);
+        updateRealTime();
+  </script>
 </body>
 </html>
