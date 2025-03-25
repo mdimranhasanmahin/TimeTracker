@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://timetracker-ruby-nine.vercel.app/sitemap.xml
