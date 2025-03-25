@@ -16,7 +16,6 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="styles.css">
- 
 </head>
 <body class="bg-black text-white flex flex-col items-center justify-center h-screen relative">
   
@@ -110,7 +109,7 @@
             const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
             const timeString = now.toLocaleTimeString();
             const dateString = now.toLocaleDateString('en-US', options);
-            document.getElementById("realTime").textContent = `${timeString}, ${dateString}`;
+            document.getElementById("realTime").textContent = `${dateString}, ${timeString}`;
         }
         setInterval(updateRealTime, 1000);
         updateRealTime();
