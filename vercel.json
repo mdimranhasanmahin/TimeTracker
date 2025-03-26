@@ -1,6 +1,0 @@
-{
-  "routes": [
-    { "src": "/sitemap.xml", "dest": "/public/sitemap.xml" },
-    { "src": "/robots.txt", "dest": "/public/robots.txt" }
-  ]
-}
