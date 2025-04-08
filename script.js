@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // আগের কোডের শুরু
   document.querySelectorAll('*').forEach(el => {
     el.style.maxWidth = '100%';
     el.style.overflowX = 'hidden';
@@ -7,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let timerInterval, hours, minutes, seconds;
   let savedHours = 0, savedMinutes = 0, savedSeconds = 0;
+  let soundEnabled = localStorage.getItem('soundEnabled') !== 'false'; // Default true
   const todayUsageEl = document.getElementById("todayUsage");
   const dailyAverageEl = document.getElementById("dailyAverage");
   const monthlyChartEl = document.getElementById("monthlyChart");
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
       else if (hours > 0) { hours--; minutes = 59; seconds = 59; }
       else {
         clearInterval(timerInterval);
-        document.getElementById("alarmSound").play();
+        if (soundEnabled) document.getElementById("alarmSound").play();
         updateUsage(startTime);
       }
       saveTimerState();
@@ -66,6 +66,8 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem("totalThisYearUsage", totalThisYearUsage);
     calculateDailyAverage();
     updateDashboard(sessionMinutes);
+    monthlyChart.data.datasets[0].data = monthlyUsage;
+    monthlyChart.update();
   }
 
   function calculateDailyAverage() {
@@ -81,14 +83,22 @@ document.addEventListener('DOMContentLoaded', () => {
     return `${hours} Hr ${minutes} Min`;
   }
 
+  function countUp(element, targetMinutes, duration = 1000) {
+    let start = 0;
+    const stepTime = Math.abs(Math.floor(duration / targetMinutes)) || 10;
+    const timer = setInterval(() => {
+      start += 1;
+      element.textContent = formatTime(start);
+      if (start >= targetMinutes) {
+        clearInterval(timer);
+        element.textContent = formatTime(targetMinutes);
+      }
+    }, stepTime);
+  }
+
   function updateDashboard(lastSession) {
-    if (todayUsageEl) todayUsageEl.textContent = formatTime(todayUsage);
-    if (dailyAverageEl) dailyAverageEl.textContent = formatTime(Math.round(dailyAverage));
-    const lastSessionUsage = document.getElementById("lastSessionUsage");
-    if (lastSessionUsage) lastSessionUsage.textContent = `Last Session: ${formatTime(lastSession)}`;
-    if (monthlyChart) {
-      monthlyChart.update();
-    }
+    if (todayUsageEl) countUp(todayUsageEl, todayUsage);
+    if (dailyAverageEl) countUp(dailyAverageEl, Math.round(dailyAverage));
   }
 
   function checkNewDay() {
@@ -107,6 +117,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
       calculateDailyAverage();
       updateDashboard(0);
+      monthlyChart.data.datasets[0].data = monthlyUsage;
+      monthlyChart.update();
     }
   }
 
@@ -124,6 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     options: {
       responsive: true,
+      animation: { duration: 1000, easing: 'easeOutQuad', y: { from: 0 } },
       plugins: {
         legend: { position: 'top' },
         tooltip: {
@@ -134,7 +147,76 @@ document.addEventListener('DOMContentLoaded', () => {
             }
           }
         }
-      }
+      },
+      scales: { y: { beginAtZero: true } }
+    }
+  });
+
+  // QR Code and Scanner Logic
+  function getLocalStorageData() {
+    const data = {};
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      data[key] = localStorage.getItem(key);
+    }
+    return JSON.stringify(data);
+  }
+
+  function setLocalStorageData(data) {
+    const parsedData = JSON.parse(data);
+    for (const key in parsedData) {
+      localStorage.setItem(key, parsedData[key]);
+    }
+    // Reload data after import
+    todayUsage = parseInt(localStorage.getItem("todayUsage")) || 0;
+    dailyAverage = parseFloat(localStorage.getItem("dailyAverage")) || 0;
+    monthlyUsage = JSON.parse(localStorage.getItem("monthlyUsage")) || Array(12).fill(0);
+    totalThisYearUsage = parseInt(localStorage.getItem("totalThisYearUsage")) || 0;
+    totalDays = parseInt(localStorage.getItem("totalDays")) || 0;
+    lastUpdatedDate = localStorage.getItem("lastUpdatedDate") || '';
+    soundEnabled = localStorage.getItem('soundEnabled') !== 'false';
+    loadTimerState();
+    updateTimerDisplay();
+    updateDashboard(0);
+    monthlyChart.data.datasets[0].data = monthlyUsage;
+    monthlyChart.update();
+  }
+
+  document.getElementById("generateQRBtn").addEventListener("click", () => {
+    const qrCodeContainer = document.getElementById("qrCodeContainer");
+    qrCodeContainer.innerHTML = ''; // Clear previous QR code
+    qrCodeContainer.classList.remove("hidden");
+    const data = getLocalStorageData();
+    QRCode.toCanvas(data, { width: 200 }, (err, canvas) => {
+      if (err) console.error(err);
+      qrCodeContainer.appendChild(canvas);
+    });
+  });
+
+  document.getElementById("scanQRBtn").addEventListener("click", () => {
+    document.getElementById("qrFileInput").click();
+  });
+
+  document.getElementById("qrFileInput").addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0, img.width, img.height);
+        const imageData = ctx.getImageData(0, 0, img.width, img.height);
+        const code = jsQR(imageData.data, imageData.width, imageData.height);
+        if (code) {
+          setLocalStorageData(code.data);
+          alert("Data imported successfully!");
+        } else {
+          alert("No QR code found in the image.");
+        }
+      };
+      img.src = URL.createObjectURL(file);
     }
   });
 
@@ -171,6 +253,8 @@ document.addEventListener('DOMContentLoaded', () => {
     dashboard.classList.remove("hidden");
     dashboard.classList.add("flex", "items-center", "justify-center");
     updateDashboard(0);
+    monthlyChart.data.datasets[0].data = monthlyUsage;
+    monthlyChart.update();
   });
 
   document.getElementById("closeDashboardBtn").addEventListener("click", () => {
@@ -179,19 +263,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById("restartBtn").addEventListener("click", () => {
     clearInterval(timerInterval);
-    loadTimerState();
+    hours = savedHours;
+    minutes = savedMinutes;
+    seconds = savedSeconds;
     updateTimerDisplay();
   });
 
-  setInterval(() => {
-    const now = new Date();
-    document.getElementById("realTime").textContent = искренೀ
+  // Settings Modal Logic
+  document.getElementById("settingsBtn").addEventListener("click", () => {
+    const settingsModal = document.getElementById("settingsModal");
+    settingsModal.classList.remove("hidden");
+    document.getElementById("soundToggle").checked = soundEnabled;
+  });
 
-    checkNewDay();
-  }, 60000); 
+  document.getElementById("closeSettingsBtn").addEventListener("click", () => {
+    document.getElementById("settingsModal").classList.add("hidden");
+    document.getElementById("qrCodeContainer").classList.add("hidden"); // Hide QR code on close
+  });
+
+  document.getElementById("soundToggle").addEventListener("change", (e) => {
+    soundEnabled = e.target.checked;
+    localStorage.setItem("soundEnabled", soundEnabled);
+  });
+
+  setInterval(checkNewDay, 60000); // Check every minute 
 
   loadTimerState();
   checkNewDay();
   updateTimerDisplay();
   updateDashboard(0);
-}); 
+});

@@ -12,29 +12,38 @@
   <meta property="og:title" content="Time Tracker - Achieve More with Better Time Management">
   <meta property="og:description" content="Manage your study sessions effectively with Study Timer. Stay productive!">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="icon" type="x-icon" loading="lazy" href="time concept or clock business lotgo template (1).jpg" alt="Time Tracker App Screenshot" />
+  <link rel="icon" type="image/x-icon" loading="lazy" href="time concept or clock business lotgo template (1).jpg" alt="Time Tracker App Screenshot" />
   <title>Time Tracker - Online Timer for Work, Study & Tasks</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.0/build/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
   <link rel="stylesheet" href="styles.css">
 </head>
-<body class="bg-black text-white flex flex-col items-center justify-center h-screen relative">
+<body class="text-white flex flex-col items-center justify-center h-screen relative">
   
-  <!-- Dashboard Button -->
-  <button id="dashboardBtn" class="absolute top-4 left-4 px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white font-bold rounded">Dashboard</button>
+  <!-- Dashboard and Settings Buttons -->
+  <div class="absolute top-4 left-4 flex space-x-4">
+    <button id="dashboardBtn" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white font-bold rounded">Dashboard</button>
+    <button id="settingsBtn" class="p-2 bg-gray-700 hover:bg-gray-600 text-white font-bold rounded-full">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l-.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </button>
+  </div>
 
-  <!-- Real Time Display -->
-  <div id="realTime" class="absolute top-4 right-4 text-sm font-mono opacity-70"></div>
+  <!-- Real Time Display (Stacked Vertically) -->
+  <div id="realTime" class="absolute top-4 right-4 text-sm font-mono opacity-70 flex flex-col items-end">
+    <span id="realDate"></span>
+    <span id="realClock"></span>
+  </div>
 
   <!-- Timer Section -->
   <div class="text-center space-y-8">
-    <h1 class="text-3xl font-bold">Time Tracker</h1>
     <div id="timerDisplay" class="text-8xl font-bold">00:00:00</div>
     <div class="space-x-4">
       <button id="setTimeBtn" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xl rounded">Set Time</button>
       <button id="startBtn" class="px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-bold text-xl rounded">Start</button>
       <button id="restartBtn" class="px-4 py-3 bg-emerald-400 hover:bg-emerald-500 text-white font-bold rounded">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rotate-ccw"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
       </button>
     </div>
   </div>
@@ -78,20 +87,46 @@
       </div>
     </div>
   </div>
+
+  <!-- Settings Modal -->
+  <div id="settingsModal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center">
+    <div class="bg-gray-800 text-white p-6 rounded shadow-lg space-y-4 w-80">
+      <h2 class="text-xl font-bold text-center">Settings</h2>
+      <div class="flex justify-between items-center">
+        <label for="soundToggle">Timer Sound</label>
+        <input id="soundToggle" type="checkbox" checked class="w-5 h-5">
+      </div>
+      <div class="space-y-2">
+        <button id="generateQRBtn" class="w-full px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded">Generate QR Code</button>
+        <div id="qrCodeContainer" class="hidden text-center"></div>
+        <button id="scanQRBtn" class="w-full px-4 py-2 bg-green-600 hover:bg-green-500 text-white font-bold rounded">Scan QR Code</button>
+        <input id="qrFileInput" type="file" accept="image/*" class="hidden">
+      </div>
+      <div class="text-center">
+        <button id="closeSettingsBtn" class="px-4 py-2 bg-red-600 hover:bg-red-500 text-white font-bold rounded">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Robot Button and Chat -->
   <button id="robotBtn" class="fixed bottom-4 right-4 bg-blue-600 hover:bg-purple-700 p-4 rounded-full shadow-lg z-20">
     <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2a4 4 0 018 0v2m1 4H4a1 1 0 01-1-1V9a1 1 0 011-1h3V6a4 4 0 118 0v2h3a1 1 0 011 1v11a1 1 0 01-1 1z"/></svg>
   </button>
 
-  <!-- ChatGPT iFrame -->
-  <div id="chatContainer" class="hidden fixed bottom-20 right-4 w-80 h-96 bg-gray-900 rounded-lg shadow-lg overflow-hidden z-30">
+  <!-- Chat Container -->
+  <div id="chatContainer" class="hidden fixed bottom-4 right-4 w-[300px] h-[400px] md:w-[400px] md:h-[600px] bg-gray-900 rounded-lg shadow-lg overflow-hidden z-30">
     <div class="flex justify-between items-center bg-blue-700 p-2">
       <span class="text-white font-bold">Chat Assistant</span>
-      <button id="closeChat" class="text-white text-xl">&times;</button>
+      <button id="closeChat" class="text-white text-xl">×</button>
     </div>
-    <iframe id="chatIframe" src="https://chat.openai.com/" class="w-full h-full border-none"></iframe>
+    <div class="relative w-full h-full">
+      <iframe src="https://page.botpenguin.com/67e6417921bc133d303232c5/67e6411a16f75c2ef77e5985" class="absolute inset-0 w-full h-full" frameborder="0"></iframe>
+    </div>
   </div>
+
   <!-- Sound Alarm -->
   <audio id="alarmSound" src="bell-ring-01.wav" preload="auto"></audio>
+
   <script src="script.js" defer></script>
   <script>
     const robotBtn = document.getElementById('robotBtn');
@@ -105,15 +140,15 @@
     closeChat.addEventListener('click', () => {
       chatContainer.classList.add('hidden');
     });
-     function updateRealTime() {
-            const now = new Date();
-            const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
-            const timeString = now.toLocaleTimeString();
-            const dateString = now.toLocaleDateString('en-US', options);
-            document.getElementById("realTime").textContent = `${dateString}, ${timeString}`;
-        }
-        setInterval(updateRealTime, 1000);
-        updateRealTime();
+
+    function updateRealTime() {
+      const now = new Date();
+      const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
+      document.getElementById("realDate").textContent = now.toLocaleDateString('en-US', options);
+      document.getElementById("realClock").textContent = now.toLocaleTimeString();
+    }
+    setInterval(updateRealTime, 1000);
+    updateRealTime();
   </script>
 </body>
 </html>

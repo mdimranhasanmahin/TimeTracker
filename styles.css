@@ -2,6 +2,8 @@ body {
   font-family: 'Courier New', Courier, monospace;
   overflow-x: hidden;
   margin: 0;
+  animation: fadeIn 1s ease-in;
+  background-color: #1A1A1A;
 }
 
 * {
@@ -19,26 +21,51 @@ body {
   max-width: 90%;
 }
 
-#dashboardModal {
+#dashboardModal, #settingsModal {
   max-width: 90%;
   overflow-y: auto;
 }
+
+#todayUsage, #dailyAverage {
+  display: inline-block;
+  animation: slideUpNumber 1s ease-out forwards;
+}
+
+/* Chat Container Specific Styles */
+#chatContainer {
+  width: 380px !important;
+  height: 475px !important;
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  background-color: #1f2937;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  z-index: 30;
+}
+
+/* PC-এর জন্য বড় সাইজ */
 @media (min-width: 768px) {
-  #dashboardModal {
+  #chatContainer {
+    width: 380px !important;
+    height: 475px !important;
+  }
+  #dashboardModal, #settingsModal {
     max-width: 50%;
     padding: 20px;
   }
 }
 
 @media (min-width: 1024px) {
-  #dashboardModal {
+  #dashboardModal, #settingsModal {
     max-width: 40%;
     padding: 16px;
   }
 }
 
 @media (max-width: 393px) {
-  #dashboardModal {
+  #dashboardModal, #settingsModal {
     max-width: 100%;
     padding: 10px;
   }
@@ -46,4 +73,14 @@ body {
   .text-lg { font-size: 1rem; }
   .space-x-4 { gap: 0.5rem; }
   #timerDisplay { font-size: 4.5rem; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUpNumber {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
