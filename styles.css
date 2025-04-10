@@ -1,22 +1,46 @@
-/* রিসেট স্টাইল */
+/* Reset Styles */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
-/* ড্যাশবোর্ড এবং সেটিংস মডাল */
+
+/* HTML and Body Full Screen */
+html, body {
+  height: 100%;
+  width: 100%;
+  background: #1A1A1A !important;
+  font-family: 'Courier New', Courier, monospace;
+  color: #ffffff;
+  overflow-x: hidden;
+  animation: fadeIn 0.5s ease-in;
+}
+
+/* Timer Display */
+#timerDisplay {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(4rem, 11vw, 6.15rem);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100%;
+  max-width: 90%;
+}
+
+/* Dashboard and Settings Modal */
 #dashboardModal, #settingsModal {
   max-width: 90%;
   overflow-y: auto;
+  z-index: 40;
 }
 
-/* টুডে ইউসেজ এবং ডেইলি এভারেজ অ্যানিমেশন */
+/* Today Usage and Daily Average Animation */
 #todayUsage, #dailyAverage {
   display: inline-block;
   animation: slideUpNumber 1s ease-out forwards;
 }
 
-/* চ্যাট কন্টেইনার */
+/* Chat Container */
 #chatContainer {
   width: 380px !important;
   height: 475px !important;
@@ -32,7 +56,23 @@
   z-index: 30;
 }
 
-/* মিডিয়া কোয়েরি: PC এবং বড় স্ক্রিন */
+/* Hidden Class */
+.hidden {
+  display: none !important;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUpNumber {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Media Queries: PC and Large Screens */
 @media (min-width: 768px) {
   #chatContainer {
     width: 380px !important;
@@ -54,23 +94,35 @@
   }
 }
 
-
-
-
-/* অ্যানিমেশন */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+/* Media Queries: Mobile Screens */
+@media (max-width: 768px) {
+  #dashboardModal, #settingsModal {
+    max-width: 90%;
+    padding: 15px;
+    overflow-y: auto;
+  }
+  #chatContainer {
+    width: 90% !important;
+    height: 80vh !important;
+    right: 0.5rem;
+    bottom: 0.5rem;
+  }
+  body {
+    background-color: #1A1A1A !important;
+    -webkit-background-color: #1A1A1A !important;
+    -moz-background-color: #1A1A1A !important;
+  }
 }
 
-@keyframes slideUpNumber {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-/* HTML এবং Body কে পুরো স্ক্রিন কভার করা */
-html, body {
-  height: 100%;
-  width: 100%;
-  background: #1A1A1A !important;
+@media (max-width: 393px) {
+  #dashboardModal, #settingsModal {
+    max-width: 100%;
+    padding: 10px;
+  }
+  #timerDisplay {
+    font-size: clamp(3rem, 10vw, 4.5rem);
+  }
+  .text-xl { font-size: 1.25rem; }
+  .text-lg { font-size: 1rem; }
+  .space-x-4 { gap: 0.5rem; }
 }

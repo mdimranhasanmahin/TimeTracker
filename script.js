@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let timerInterval, hours, minutes, seconds;
   let savedHours = 0, savedMinutes = 0, savedSeconds = 0;
-  let soundEnabled = localStorage.getItem('soundEnabled') !== 'false'; // Default true
+  let soundEnabled = localStorage.getItem('soundEnabled') !== 'false';
   const todayUsageEl = document.getElementById("todayUsage");
   const dailyAverageEl = document.getElementById("dailyAverage");
   const monthlyChartEl = document.getElementById("monthlyChart");
@@ -97,8 +97,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function updateDashboard(lastSession) {
-    if (todayUsageEl) countUp(todayUsageEl, todayUsage);
-    if (dailyAverageEl) countUp(dailyAverageEl, Math.round(dailyAverage));
+    if (todayUsageEl) {
+      setTimeout(() => countUp(todayUsageEl, todayUsage), 100);
+    }
+    if (dailyAverageEl) {
+      setTimeout(() => countUp(dailyAverageEl, Math.round(dailyAverage)), 100);
+    }
   }
 
   function checkNewDay() {
@@ -129,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
       datasets: [{
         label: 'Study Time (Minutes)',
         data: monthlyUsage,
-        backgroundColor: 'rgba(0, 123, 255, 0.7)', // Blue-600
+        backgroundColor: 'rgba(0, 123, 255, 0.7)',
         borderColor: 'rgba(0, 123, 255, 1)',
         borderWidth: 1
       }]
@@ -219,6 +223,30 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // Event Listeners with Touch Support
+  const settingsBtn = document.getElementById("settingsBtn");
+  const dashboardBtn = document.getElementById("dashboardBtn");
+
+  settingsBtn.addEventListener("click", openSettings);
+  settingsBtn.addEventListener("touchend", openSettings);
+  dashboardBtn.addEventListener("click", openDashboard);
+  dashboardBtn.addEventListener("touchend", openDashboard);
+
+  function openSettings() {
+    const settingsModal = document.getElementById("settingsModal");
+    settingsModal.classList.remove("hidden");
+    document.getElementById("soundToggle").checked = soundEnabled;
+  }
+
+  function openDashboard() {
+    const dashboard = document.getElementById("dashboardModal");
+    dashboard.classList.remove("hidden");
+    dashboard.classList.add("flex", "items-center", "justify-center");
+    setTimeout(() => updateDashboard(0), 100);
+    monthlyChart.data.datasets[0].data = monthlyUsage;
+    monthlyChart.update();
+  }
+
   document.getElementById("startBtn").addEventListener("click", () => {
     if (hours === 0 && minutes === 0 && seconds === 0) {
       document.getElementById("timeModal").classList.remove("hidden");
@@ -247,15 +275,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById("timeModal").classList.add("hidden");
   });
 
-  document.getElementById("dashboardBtn").addEventListener("click", () => {
-    const dashboard = document.getElementById("dashboardModal");
-    dashboard.classList.remove("hidden");
-    dashboard.classList.add("flex", "items-center", "justify-center");
-    updateDashboard(0);
-    monthlyChart.data.datasets[0].data = monthlyUsage;
-    monthlyChart.update();
-  });
-
   document.getElementById("closeDashboardBtn").addEventListener("click", () => {
     document.getElementById("dashboardModal").classList.add("hidden");
   });
@@ -268,12 +287,6 @@ document.addEventListener('DOMContentLoaded', () => {
     updateTimerDisplay();
   });
 
-  document.getElementById("settingsBtn").addEventListener("click", () => {
-    const settingsModal = document.getElementById("settingsModal");
-    settingsModal.classList.remove("hidden");
-    document.getElementById("soundToggle").checked = soundEnabled;
-  });
-
   document.getElementById("closeSettingsBtn").addEventListener("click", () => {
     document.getElementById("settingsModal").classList.add("hidden");
     document.getElementById("qrCodeContainer").classList.add("hidden");
@@ -284,8 +297,30 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem("soundEnabled", soundEnabled);
   });
 
-  setInterval(checkNewDay, 60000); // Check every minute 
+  const robotBtn = document.getElementById('robotBtn');
+  const chatContainer = document.getElementById('chatContainer');
+  const closeChat = document.getElementById('closeChat');
 
+  robotBtn.addEventListener('click', () => {
+    chatContainer.classList.toggle('hidden');
+  });
+
+  closeChat.addEventListener('click', () => {
+    chatContainer.classList.add('hidden');
+  });
+
+  function updateRealTime() {
+    const now = new Date();
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = months[now.getMonth()];
+    const year = now.getFullYear();
+    document.getElementById("realClock").textContent = now.toLocaleTimeString();
+    document.getElementById("realDate").textContent = `${day} ${month} ${year}`;
+  }
+
+  setInterval(updateRealTime, 1000);
+  setInterval(checkNewDay, 60000);
   loadTimerState();
   checkNewDay();
   updateTimerDisplay();
