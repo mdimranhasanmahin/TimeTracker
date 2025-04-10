@@ -4,33 +4,6 @@
   margin: 0;
   padding: 0;
 }
-
-/* বডি স্টাইল */
-body {
-  font-family: 'Courier New', Courier, monospace;
-  background-color: #1A1A1A !important;
-  -webkit-background-color: #1A1A1A !important;
-  -moz-background-color: #1A1A1A !important;
-  color: #ffffff;
-  overflow-x: hidden;
-  margin: 0;
-  padding: 0;
-  height: 100vh;
-  width: 100vw;
-  animation: fadeIn 1s ease-in;
-}
-
-/* টাইমার ডিসপ্লে: Orbitron ফন্ট ব্যবহার */
-#timerDisplay {
-  font-family: 'Inter', sans-serif; /* Inter ফন্ট ব্যবহার */
-  font-size: clamp(4rem, 11vw, 6.15rem);
-  text-align: center;
-  white-space: nowrap;
-  overflow: hidden;
-  width: 100%;
-  max-width: 90%;
-}
-
 /* ড্যাশবোর্ড এবং সেটিংস মডাল */
 #dashboardModal, #settingsModal {
   max-width: 90%;
@@ -81,33 +54,8 @@ body {
   }
 }
 
-/* মিডিয়া কোয়েরি: মোবাইল এবং ছোট স্ক্রিন */
-@media (max-width: 768px) {
-  body {
-    background-color: #1A1A1A !important;
-    -webkit-background-color: #1A1A1A !important;
-    -moz-background-color: #1A1A1A !important;
-  }
-  #chatContainer {
-    width: 380px !important;
-    height: 475px !important;
-  }
-  #dashboardModal, #settingsModal {
-    max-width: 90%;
-    padding: 15px;
-  }
-}
 
-@media (max-width: 393px) {
-  #dashboardModal, #settingsModal {
-    max-width: 100%;
-    padding: 10px;
-  }
-  .text-xl { font-size: 1.25rem; }
-  .text-lg { font-size: 1rem; }
-  .space-x-4 { gap: 0.5rem; }
-  #timerDisplay { font-size: 4.5rem; }
-}
+
 
 /* অ্যানিমেশন */
 @keyframes fadeIn {
