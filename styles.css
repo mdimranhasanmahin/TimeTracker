@@ -89,8 +89,8 @@ body {
     -moz-background-color: #1A1A1A !important;
   }
   #chatContainer {
-    width: 300px !important;
-    height: 400px !important;
+    width: 380px !important;
+    height: 475px !important;
   }
   #dashboardModal, #settingsModal {
     max-width: 90%;
