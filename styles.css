@@ -1,9 +1,4 @@
-/* রিসেট স্টাইল */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+
 /* ড্যাশবোর্ড এবং সেটিংস মডাল */
 #dashboardModal, #settingsModal {
   max-width: 90%;
@@ -54,23 +49,9 @@
   }
 }
 
-
-
-
-/* অ্যানিমেশন */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
 @keyframes slideUpNumber {
   from { transform: translateY(20px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 }
 
 /* HTML এবং Body কে পুরো স্ক্রিন কভার করা */
-html, body {
-  height: 100%;
-  width: 100%;
-  background: #1A1A1A !important;
-}
