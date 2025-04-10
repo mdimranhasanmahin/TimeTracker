@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
       datasets: [{
         label: 'Study Time (Minutes)',
         data: monthlyUsage,
-        backgroundColor: 'rgba(0, 123, 255, 0.7)',
+        backgroundColor: 'rgba(0, 123, 255, 0.7)', // Blue-600
         borderColor: 'rgba(0, 123, 255, 1)',
         borderWidth: 1
       }]
@@ -167,7 +167,6 @@ document.addEventListener('DOMContentLoaded', () => {
     for (const key in parsedData) {
       localStorage.setItem(key, parsedData[key]);
     }
-    // Reload data after import
     todayUsage = parseInt(localStorage.getItem("todayUsage")) || 0;
     dailyAverage = parseFloat(localStorage.getItem("dailyAverage")) || 0;
     monthlyUsage = JSON.parse(localStorage.getItem("monthlyUsage")) || Array(12).fill(0);
@@ -184,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById("generateQRBtn").addEventListener("click", () => {
     const qrCodeContainer = document.getElementById("qrCodeContainer");
-    qrCodeContainer.innerHTML = ''; // Clear previous QR code
+    qrCodeContainer.innerHTML = '';
     qrCodeContainer.classList.remove("hidden");
     const data = getLocalStorageData();
     QRCode.toCanvas(data, { width: 200 }, (err, canvas) => {
@@ -269,7 +268,6 @@ document.addEventListener('DOMContentLoaded', () => {
     updateTimerDisplay();
   });
 
-  // Settings Modal Logic
   document.getElementById("settingsBtn").addEventListener("click", () => {
     const settingsModal = document.getElementById("settingsModal");
     settingsModal.classList.remove("hidden");
@@ -278,7 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById("closeSettingsBtn").addEventListener("click", () => {
     document.getElementById("settingsModal").classList.add("hidden");
-    document.getElementById("qrCodeContainer").classList.add("hidden"); // Hide QR code on close
+    document.getElementById("qrCodeContainer").classList.add("hidden");
   });
 
   document.getElementById("soundToggle").addEventListener("change", (e) => {

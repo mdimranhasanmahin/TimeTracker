@@ -1,18 +1,28 @@
-body {
-  font-family: 'Courier New', Courier, monospace;
-  overflow-x: hidden;
-  margin: 0;
-  animation: fadeIn 1s ease-in;
-  background-color: #1A1A1A;
-}
-
+/* রিসেট স্টাইল */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
+/* বডি স্টাইল */
+body {
+  font-family: 'Courier New', Courier, monospace;
+  background-color: #1A1A1A !important;
+  -webkit-background-color: #1A1A1A !important;
+  -moz-background-color: #1A1A1A !important;
+  color: #ffffff;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
+  animation: fadeIn 1s ease-in;
+}
+
+/* টাইমার ডিসপ্লে: Orbitron ফন্ট ব্যবহার */
 #timerDisplay {
+  font-family: 'Inter', sans-serif; /* Inter ফন্ট ব্যবহার */
   font-size: clamp(4rem, 11vw, 6.15rem);
   text-align: center;
   white-space: nowrap;
@@ -21,31 +31,35 @@ body {
   max-width: 90%;
 }
 
+/* ড্যাশবোর্ড এবং সেটিংস মডাল */
 #dashboardModal, #settingsModal {
   max-width: 90%;
   overflow-y: auto;
 }
 
+/* টুডে ইউসেজ এবং ডেইলি এভারেজ অ্যানিমেশন */
 #todayUsage, #dailyAverage {
   display: inline-block;
   animation: slideUpNumber 1s ease-out forwards;
 }
 
-/* Chat Container Specific Styles */
+/* চ্যাট কন্টেইনার */
 #chatContainer {
   width: 380px !important;
   height: 475px !important;
   position: fixed;
   bottom: 1.5rem;
   right: 1.5rem;
-  background-color: #1f2937;
+  background-color: #1f2937 !important;
+  -webkit-background-color: #1f2937 !important;
+  -moz-background-color: #1f2937 !important;
   border-radius: 0.5rem;
   box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   z-index: 30;
 }
 
-/* PC-এর জন্য বড় সাইজ */
+/* মিডিয়া কোয়েরি: PC এবং বড় স্ক্রিন */
 @media (min-width: 768px) {
   #chatContainer {
     width: 380px !important;
@@ -55,12 +69,32 @@ body {
     max-width: 50%;
     padding: 20px;
   }
+  body {
+    background-color: #1A1A1A !important;
+  }
 }
 
 @media (min-width: 1024px) {
   #dashboardModal, #settingsModal {
     max-width: 40%;
     padding: 16px;
+  }
+}
+
+/* মিডিয়া কোয়েরি: মোবাইল এবং ছোট স্ক্রিন */
+@media (max-width: 768px) {
+  body {
+    background-color: #1A1A1A !important;
+    -webkit-background-color: #1A1A1A !important;
+    -moz-background-color: #1A1A1A !important;
+  }
+  #chatContainer {
+    width: 300px !important;
+    height: 400px !important;
+  }
+  #dashboardModal, #settingsModal {
+    max-width: 90%;
+    padding: 15px;
   }
 }
 
@@ -75,6 +109,7 @@ body {
   #timerDisplay { font-size: 4.5rem; }
 }
 
+/* অ্যানিমেশন */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -83,4 +118,11 @@ body {
 @keyframes slideUpNumber {
   from { transform: translateY(20px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
+}
+
+/* HTML এবং Body কে পুরো স্ক্রিন কভার করা */
+html, body {
+  height: 100%;
+  width: 100%;
+  background: #1A1A1A !important;
 }
