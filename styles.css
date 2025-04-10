@@ -9,11 +9,9 @@
 html, body {
   height: 100%;
   width: 100%;
-  background: #1A1A1A !important;
   font-family: 'Courier New', Courier, monospace;
   color: #ffffff;
   overflow-x: hidden;
-  animation: fadeIn 0.5s ease-in;
 }
 
 /* Timer Display */
@@ -48,8 +46,6 @@ html, body {
   bottom: 1.5rem;
   right: 1.5rem;
   background-color: #1f2937 !important;
-  -webkit-background-color: #1f2937 !important;
-  -moz-background-color: #1f2937 !important;
   border-radius: 0.5rem;
   box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
   overflow: hidden;
@@ -82,9 +78,6 @@ html, body {
     max-width: 50%;
     padding: 20px;
   }
-  body {
-    background-color: #1A1A1A !important;
-  }
 }
 
 @media (min-width: 1024px) {
@@ -106,11 +99,6 @@ html, body {
     height: 80vh !important;
     right: 0.5rem;
     bottom: 0.5rem;
-  }
-  body {
-    background-color: #1A1A1A !important;
-    -webkit-background-color: #1A1A1A !important;
-    -moz-background-color: #1A1A1A !important;
   }
 }
 
