@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const todayUsageEl = document.getElementById("todayUsage");
   const dailyAverageEl = document.getElementById("dailyAverage");
   const monthlyChartEl = document.getElementById("monthlyChart");
+
   let todayUsage = parseInt(localStorage.getItem("todayUsage")) || 0;
   let dailyAverage = parseFloat(localStorage.getItem("dailyAverage")) || 0;
   let monthlyUsage = JSON.parse(localStorage.getItem("monthlyUsage")) || Array(12).fill(0);
@@ -17,7 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
   let totalDays = parseInt(localStorage.getItem("totalDays")) || 0;
   let lastUpdatedDate = localStorage.getItem("lastUpdatedDate") || '';
   let stream = null;
-  let clockInterval = null;
 
   // Initialize modals to hidden state
   function initializeModals() {
@@ -26,7 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const modal = document.getElementById(id);
       if (modal) {
         modal.style.display = 'none';
-        modal.style.visibility = 'hidden';
         modal.classList.remove('active');
       }
     });
@@ -34,11 +33,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Show a modal
   function showModal(modalId) {
-    initializeModals();
+    initializeModals(); // Hide all other modals
     const modal = document.getElementById(modalId);
     if (modal) {
       modal.style.display = 'flex';
-      modal.style.visibility = 'visible';
       modal.classList.add('active');
     }
   }
@@ -48,31 +46,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById(modalId);
     if (modal) {
       modal.style.display = 'none';
-      modal.style.visibility = 'hidden';
       modal.classList.remove('active');
     }
-  }
-
-  // Real-time clock
-  function updateRealTime() {
-    const now = new Date();
-    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    const day = String(now.getDate()).padStart(2, '0');
-    const month = months[now.getMonth()];
-    const year = now.getFullYear();
-    const clockEl = document.getElementById("realClock");
-    const dateEl = document.getElementById("realDate");
-    if (clockEl && dateEl) {
-      clockEl.textContent = now.toLocaleTimeString();
-      dateEl.textContent = `${day} ${month} ${year}`;
-    }
-  }
-
-  // Ensure clock runs continuously
-  function startClock() {
-    if (clockInterval) clearInterval(clockInterval);
-    updateRealTime();
-    clockInterval = setInterval(updateRealTime, 1000);
   }
 
   function loadTimerState() {
@@ -173,6 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
       localStorage.setItem("lastUpdatedDate", today);
 
       calculateDailyAverage();
+      updateDashboard(0);
     }
   }
 
@@ -359,17 +335,7 @@ document.addEventListener('DOMContentLoaded', () => {
     hideModal("timeModal");
   });
 
-  // Dashboard button
-  document.getElementById("dashboardBtn").addEventListener("click", (e) => {
-    e.preventDefault();
-    showModal("dashboardModal");
-    updateDashboard(0);
-    monthlyChart.data.datasets[0].data = monthlyUsage;
-    monthlyChart.update();
-  });
-
-  document.getElementById("dashboardBtn").addEventListener("touchstart", (e) => {
-    e.preventDefault();
+  document.getElementById("dashboardBtn").addEventListener("click", () => {
     showModal("dashboardModal");
     updateDashboard(0);
     monthlyChart.data.datasets[0].data = monthlyUsage;
@@ -380,9 +346,7 @@ document.addEventListener('DOMContentLoaded', () => {
     hideModal("dashboardModal");
   });
 
-  // Settings button
-  document.getElementById("settingsBtn").addEventListener("click", (e) => {
-    e.preventDefault();
+  document.getElementById("settingsBtn").addEventListener("click", () => {
     showModal("settingsModal");
     document.getElementById("soundToggle").checked = soundEnabled;
   });
@@ -403,25 +367,6 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem("soundEnabled", soundEnabled);
   });
 
-  document.getElementById("restartBtn").addEventListener("click", () => {
-    hours = savedHours;
-    minutes = savedMinutes;
-    seconds = savedSeconds;
-    updateTimerDisplay();
-    saveTimerState();
-    clearInterval(timerInterval);
-  });
-
-  // Robot button for chat
-  document.getElementById("robotBtn").addEventListener("click", () => {
-    const chatContainer = document.getElementById("chatContainer");
-    chatContainer.style.display = chatContainer.style.display === 'none' ? 'block' : 'none';
-  });
-
-  document.getElementById("closeChat").addEventListener("click", () => {
-    document.getElementById("chatContainer").style.display = 'none';
-  });
-
   setInterval(checkNewDay, 60000);
 
   // Initialize state
@@ -429,12 +374,4 @@ document.addEventListener('DOMContentLoaded', () => {
   loadTimerState();
   checkNewDay();
   updateTimerDisplay();
-  startClock();
-
-  // Restart clock on visibility change to handle background tabs
-  document.addEventListener("visibilitychange", () => {
-    if (!document.hidden) {
-      startClock();
-    }
-  });
 });
