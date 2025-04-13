@@ -8,14 +8,14 @@
     <meta name="keywords" content="Study Timer, Timer App, Productivity Tool, Focus Timer, Pomodoro">
     <meta name="author" content="Md Imran Hasan Mahin">
     <meta name="robots" content="index, follow">
-    <meta name="theme-color" content="#1A1A1A">
-    <meta property="og:image" content="https://yourdomain.com/path/to/dark-theme-image.png">
+    <meta name="theme-color" content="#1A1A1A"> <!-- Hints at dark theme -->
+    <meta property="og:image" content="https://yourdomain.com/path/to/dark-theme-image.png"> <!-- Replace with actual image URL -->
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:title" content="Time Tracker - Achieve More with Better Time Management">
     <meta property="og:description" content="Manage your study sessions effectively with Study Timer. Stay productive!">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="https://yourdomain.com/path/to/dark-theme-image.png">
+    <meta name="twitter:image" content="https://yourdomain.com/path/to/dark-theme-image.png"> <!-- Same image as og:image -->
     <link rel="icon" type="image/x-icon" loading="lazy" href="11.webp" alt="Time Tracker App Screenshot" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <title>Time Tracker - Online Timer for Work, Study & Tasks</title>
@@ -26,125 +26,150 @@
     <link rel="stylesheet" href="styles.css">
   </head>
   <body class="text-white flex flex-col items-center justify-center h-screen relative" style="background-color: #1A1A1A !important;">
-    <!-- Dashboard and Settings Buttons -->
-    <div class="absolute top-4 left-4 flex space-x-4">
-      <button id="dashboardBtn" class="px-4 py-2 bg-zinc-700 hover:bg-zinc-800 text-white font-bold rounded">Dashboard</button>
-      <button id="settingsBtn" class="px-4 py-2 bg-zinc-700 hover:bg-zinc-800 text-white font-bold rounded">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+  <!-- Dashboard and Settings Buttons -->
+  <div class="absolute top-4 left-4 flex space-x-4">
+    <button id="dashboardBtn" class="px-4 py-2 bg-zinc-700 hover:bg-zinc-800 text-white font-bold rounded">Dashboard</button>
+    <button id="settingsBtn" class="px-4 py-2 bg-zinc-700 hover:bg-zinc-800 text-white font-bold rounded">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+    </button>
+  </div>
+
+  <!-- Real Time Display (Time above Date) -->
+  <div id="realTime" class="absolute top-4 right-4 text-sm font-mono opacity-70 flex flex-col items-end">
+    <span id="realClock"></span>
+    <span id="realDate"></span>
+  </div>
+
+  <!-- Timer Section -->
+  <div class="text-center space-y-8">
+    <div id="timerDisplay" class="text-8xl font-bold">00:00:00</div>
+    <div class="space-x-4">
+      <button id="setTimeBtn" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xl rounded">Set Time</button>
+      <button id="startBtn" class="px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-bold text-xl rounded">Start</button>
+      <button id="restartBtn" class="px-4 py-3 bg-emerald-400 hover:bg-emerald-500 text-white font-bold rounded">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rotate-ccw"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
       </button>
     </div>
+  </div>
 
-    <!-- Real Time Display (Time above Date) -->
-    <div id="realTime" class="absolute top-4 right-4 text-sm font-mono opacity-70 flex flex-col items-end">
-      <span id="realClock"></span>
-      <span id="realDate"></span>
-    </div>
-
-    <!-- Timer Section -->
-    <div class="text-center space-y-8">
-      <div id="timerDisplay" class="text-8xl font-bold">00:00:00</div>
-      <div class="space-x-4">
-        <button id="setTimeBtn" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xl rounded">Set Time</button>
-        <button id="startBtn" class="px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-bold text-xl rounded">Start</button>
-        <button id="restartBtn" class="px-4 py-3 bg-emerald-400 hover:bg-emerald-500 text-white font-bold rounded">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rotate-ccw"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
-        </button>
+  <!-- Time Modal -->
+  <div id="timeModal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center">
+    <div class="bg-gray-800 text-white p-6 rounded shadow-lg space-y-4 w-80">
+      <h2 class="text-xl font-bold text-center">Set Timer</h2>
+      <div class="flex justify-center space-x-4">
+        <input id="hoursInput" type="number" min="0" max="23" placeholder="HH" class="w-16 p-2 bg-gray-700 text-white text-center rounded">
+        <input id="minutesInput" type="number" min="0" max="59" placeholder="MM" class="w-16 p-2 bg-gray-700 text-white text-center rounded">
+        <input id="secondsInput" type="number" min="0" max="59" placeholder="SS" class="w-16 p-2 bg-gray-700 text-white text-center rounded">
+      </div>
+      <div class="flex justify-center space-x-4">
+        <button id="saveTimeBtn" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded">Save</button>
+        <button id="closeModalBtn" class="px-4 py-2 bg-red-600 hover:bg-red-500 text-white font-bold rounded">Cancel</button>
       </div>
     </div>
+  </div>
 
-    <!-- Time Modal -->
-    <div id="timeModal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center">
-      <div class="bg-gray-800 text-white p-6 rounded shadow-lg space-y-4 w-80">
-        <h2 class="text-xl font-bold text-center">Set Timer</h2>
-        <div class="flex justify-center space-x-4">
-          <input id="hoursInput" type="number" min="0" max="23" placeholder="HH" class="w-16 p-2 bg-gray-700 text-white text-center rounded">
-          <input id="minutesInput" type="number" min="0" max="59" placeholder="MM" class="w-16 p-2 bg-gray-700 text-white text-center rounded">
-          <input id="secondsInput" type="number" min="0" max="59" placeholder="SS" class="w-16 p-2 bg-gray-700 text-white text-center rounded">
+  <!-- Dashboard Modal -->
+  <div id="dashboardModal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center">
+    <div class="bg-neutral-900 text-white p-6 rounded shadow-lg space-y-6">
+      <h2 class="text-2xl font-bold text-center">Dashboard</h2>
+      <div class="grid grid-cols-2 gap-4">
+        <div class="p-4 bg-blue-600 text-center rounded-lg">
+          <h3 class="text-lg font-bold">Today Work</h3>
+          <p id="todayUsage" class="text-4xl font-bold">0 Min</p>
         </div>
-        <div class="flex justify-center space-x-4">
-          <button id="saveTimeBtn" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded">Save</button>
-          <button id="closeModalBtn" class="px-4 py-2 bg-red-600 hover:bg-red-500 text-white font-bold rounded">Cancel</button>
+        <div class="p-4 bg-green-600 text-center rounded-lg">
+          <h3 class="text-lg font-bold">Average</h3>
+          <p id="dailyAverage" class="text-4xl font-bold">0 Min</p>
         </div>
+      </div>
+      <div>
+        <h3 class="text-lg font-bold mb-2">Monthly work</h3>
+        <canvas id="monthlyChart"></canvas>
+      </div>
+      <div class="text-center">
+        <button id="closeDashboardBtn" class="px-4 py-2 bg-red-600 hover:bg-red-500 text-white font-bold rounded">Close</button>
       </div>
     </div>
+  </div>
 
-    <!-- Dashboard Modal -->
-    <div id="dashboardModal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center">
-      <div class="bg-neutral-900 text-white p-6 rounded shadow-lg space-y-6">
-        <h2 class="text-2xl font-bold text-center">Dashboard</h2>
-        <div class="grid grid-cols-2 gap-4">
-          <div class="p-4 bg-blue-600 text-center rounded-lg">
-            <h3 class="text-3xl font-bold">Today Work</h3>
-            <p id="todayUsage" class="text-4xl font-bold">0 Min</p>
-          </div>
-          <div class="p-4 bg-green-600 text-center rounded-lg">
-            <h3 class="text-lg font-bold">Average</h3>
-            <p id="dailyAverage" class="text-4xl font-bold">0 Min</p>
-          </div>
-        </div>
-        <div>
-          <h3 class="text-lg font-bold mb-2">Monthly work</h3>
-          <canvas id="monthlyChart"></canvas>
-        </div>
-        <div class="text-center">
-          <button id="closeDashboardBtn" class="px-4 py-2 bg-red-600 hover:bg-red-500 text-white font-bold rounded">Close</button>
-        </div>
+  <!-- Settings Modal -->
+  <div id="settingsModal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center">
+    <div class="bg-neutral-900 text-white p-6 rounded shadow-lg space-y-4 w-80">
+      <h2 class="text-xl font-bold text-center">Settings</h2>
+      <div class="flex justify-between items-center">
+        <label for="soundToggle">Timer Sound</label>
+        <input id="soundToggle" type="checkbox" checked class="w-5 h-5">
+      </div>
+      <div class="space-y-2">
+        <button id="generateQRBtn" class="w-full px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded">Generate QR Code</button>
+        <div id="qrCodeContainer" class="hidden text-center"></div>
+        <button id="scanQRBtn" class="w-full px-4 py-2 bg-green-600 hover:bg-green-500 text-white font-bold rounded">Scan QR Code</button>
+        <input id="qrFileInput" type="file" accept="image/*" class="hidden">
+      </div>
+      <div class="text-center">
+        <button id="closeSettingsBtn" class="px-4 py-2 bg-red-600 hover:bg-red-500 text-white font-bold rounded">Close</button>
       </div>
     </div>
+  </div>
 
-    <!-- Settings Modal -->
-    <div id="settingsModal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center">
-      <div class="bg-neutral-900 text-white p-6 rounded shadow-lg space-y-4 w-80">
-        <h2 class="text-xl font-bold text-center">Settings</h2>
-        <div class="flex justify-between items-center">
-          <label for="soundToggle">Timer Sound</label>
-          <input id="soundToggle" type="checkbox" checked class="w-5 h-5">
-        </div>
-        <div class="space-y-2">
-          <button id="generateQRBtn" class="w-full px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded">Generate QR Code</button>
-          <div id="qrCodeContainer" class="hidden text-center"></div>
-          <button id="scanQRBtn" class="w-full px-4 py-2 bg-green-600 hover:bg-green-500 text-white font-bold rounded">Scan QR Code</button>
-          <input id="qrFileInput" type="file" accept="image/*" class="hidden">
-        </div>
-        <div class="text-center">
-          <button id="closeSettingsBtn" class="px-4 py-2 bg-red-600 hover:bg-red-500 text-white font-bold rounded">Close</button>
-        </div>
+  <!-- QR Scanner Modal -->
+  <div id="scannerModal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center">
+    <div class="bg-neutral-900 text-white p-6 rounded shadow-lg space-y-4 w-80">
+      <h2 class="text-xl font-bold text-center">Scan QR Code</h2>
+      <div class="relative">
+        <video id="scannerVideo" class="w-full h-auto rounded" autoplay></video>
+        <canvas id="scannerCanvas" class="hidden"></canvas>
+      </div>
+      <div class="text-center">
+        <button id="closeScannerBtn" class="px-4 py-2 bg-red-600 hover:bg-red-500 text-white font-bold rounded">Cancel</button>
       </div>
     </div>
+  </div>
 
-    <!-- QR Scanner Modal -->
-    <div id="scannerModal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center">
-      <div class="bg-neutral-900 text-white p-6 rounded shadow-lg space-y-4 w-80">
-        <h2 class="text-xl font-bold text-center">Scan QR Code</h2>
-        <div class="relative">
-          <video id="scannerVideo" class="w-full h-auto rounded" autoplay></video>
-          <canvas id="scannerCanvas" class="hidden"></canvas>
-        </div>
-        <div class="text-center">
-          <button id="closeScannerBtn" class="px-4 py-2 bg-red-600 hover:bg-red-500 text-white font-bold rounded">Cancel</button>
-        </div>
-      </div>
+  <!-- Robot Button and Chat -->
+  <button id="robotBtn" class="fixed bottom-4 right-4 bg-blue-600 hover:bg-blue-700 p-4 rounded-full shadow-lg z-20">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+  </button>
+
+  <!-- Chat Container -->
+  <div id="chatContainer" class="hidden fixed bottom-4 right-4 w-[300px] h-[400px] md:w-[400px] md:h-[600px] bg-gray-900 rounded-lg shadow-lg overflow-hidden z-30">
+    <div class="flex justify-between items-center bg-blue-700 p-2">
+      <span class="text-white font-bold">Chat Assistant</span>
+      <button id="closeChat" class="text-white text-xl">×</button>
     </div>
-
-    <!-- Robot Button and Chat -->
-    <button id="robotBtn" class="fixed bottom-4 right-4 bg-blue-600 hover:bg-blue-700 p-4 rounded-full shadow-lg z-20">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24  24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
-    </button>
-
-    <!-- Chat Container -->
-    <div id="chatContainer" class="hidden fixed bottom-4 right-4 w-[300px] h-[400px] md:w-[400px] md:h-[600px] bg-gray-900 rounded-lg shadow-lg overflow-hidden z-30">
-      <div class="flex justify-between items-center bg-blue-700 p-2">
-        <span class="text-white font-bold">Chat Assistant</span>
-        <button id="closeChat" class="text-white text-xl">×</button>
-      </div>
-      <div class="relative w-full h-full">
-        <iframe src="https://page.botpenguin.com/67_edit.php?app_id=67e6417921bc133d303232c5&bot_id=67e6411a16f75c2ef77e5985&variation_id=67e6411a16f75c2ef77e5985" class="absolute inset-0 w-full h-full" frameborder="0"></iframe>
-      </div>
+    <div class="relative w-full h-full">
+      <iframe src="https://page.botpenguin.com/67_edit.php?app_id=67e6417921bc133d303232c5&bot_id=67e6411a16f75c2ef77e5985&variation_id=67e6411a16f75c2ef77e5985" class="absolute inset-0 w-full h-full" frameborder="0"></iframe>
     </div>
+  </div>
 
-    <!-- Sound Alarm -->
-    <audio id="alarmSound" src="bell-ring-01.wav" preload="auto"></audio>
+  <!-- Sound Alarm -->
+  <audio id="alarmSound" src="bell-ring-01.wav" preload="auto"></audio>
 
-    <script src="script.js" defer></script>
-  </body>
+  <script src="script.js" defer></script>
+  <script>
+    const robotBtn = document.getElementById('robotBtn');
+    const chatContainer = document.getElementById('chatContainer');
+    const closeChat = document.getElementById('closeChat');
+
+    robotBtn.addEventListener('click', () => {
+      chatContainer.classList.toggle('hidden');
+    });
+
+    closeChat.addEventListener('click', () => {
+      chatContainer.classList.add('hidden');
+    });
+
+    function updateRealTime() {
+      const now = new Date();
+      const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      const day = String(now.getDate()).padStart(2, '0');
+      const month = months[now.getMonth()];
+      const year = now.getFullYear();
+      document.getElementById("realClock").textContent = now.toLocaleTimeString();
+      document.getElementById("realDate").textContent = `${day} ${month} ${year}`;
+    }
+    setInterval(updateRealTime, 1000);
+    updateRealTime();
+  </script>
+</body>
 </html>

@@ -32,9 +32,10 @@ document.addEventListener('DOMContentLoaded', () => {
       realClock.textContent = now.toLocaleTimeString();
       realDate.textContent = `${day} ${month} ${year}`;
     }
+    // Schedule next update
     setTimeout(updateRealTime, 1000);
   }
-  updateRealTime();
+  updateRealTime(); // Start the clock
 
   // Initialize modals to hidden state
   function initializeModals() {
@@ -50,12 +51,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Show a modal
   function showModal(modalId) {
-    initializeModals();
+    initializeModals(); // Hide all other modals
     const modal = document.getElementById(modalId);
     if (modal) {
       modal.style.display = 'flex';
       modal.classList.add('active');
-      console.log(`Opened modal: ${modalId}`); // Debug log
     }
   }
 
@@ -65,7 +65,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (modal) {
       modal.style.display = 'none';
       modal.classList.remove('active');
-      console.log(`Closed modal: ${modalId}`); // Debug log
     }
   }
 
@@ -365,18 +364,16 @@ document.addEventListener('DOMContentLoaded', () => {
     hideModal("dashboardModal");
   });
 
-  // Settings Button Handler with PointerDown
+  // Unified Settings Button Handler for Click and Touch
   const settingsBtn = document.getElementById("settingsBtn");
-  let isOpening = false; // Prevent double-tap issues
-  settingsBtn.addEventListener("pointerdown", (e) => {
-    e.preventDefault(); // Prevent default behaviors
-    if (!isOpening) {
-      isOpening = true;
-      console.log("Settings button triggered"); // Debug log
-      showModal("settingsModal");
-      document.getElementById("soundToggle").checked = soundEnabled;
-      setTimeout(() => { isOpening = false; }, 300); // Reset after delay
-    }
+  settingsBtn.addEventListener("click", (e) => {
+    showModal("settingsModal");
+    document.getElementById("soundToggle").checked = soundEnabled;
+  });
+  settingsBtn.addEventListener("touchstart", (e) => {
+    e.preventDefault(); // Prevent double-firing on mobile
+    showModal("settingsModal");
+    document.getElementById("soundToggle").checked = soundEnabled;
   });
 
   document.getElementById("closeSettingsBtn").addEventListener("click", () => {
