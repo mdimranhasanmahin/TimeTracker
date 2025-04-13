@@ -28,8 +28,8 @@
 <body class="text-white flex flex-col items-center justify-center h-screen relative" style="background-color: #1A1A1A !important;">
   <!-- Dashboard and Settings Buttons -->
   <div class="absolute top-4 left-4 flex space-x-4">
-    <button id="dashboardBtn" class="px-4 py-2 bg-zinc-700 hover:bg-zinc-800 text-white font-bold rounded touch-action-auto" style="min-width: 44px; min-height: 44px; z-index: 1000;">Dashboard</button>
-    <button id="settingsBtn" class="px-4 py-2 bg-zinc-700 hover:bg-zinc-800 text-white font-bold rounded touch-action-auto" style="min-width: 44px; min-height: 44px; z-index: 1000;">
+    <button id="dashboardBtn" class="px-4 py-2 bg-zinc-700 hover:bg-zinc-800 text-white font-bold rounded touch-action-manipulation" style="min-width: 44px; min-height: 44px; z-index: 1000;">Dashboard</button>
+    <button id="settingsBtn" class="px-4 py-2 bg-zinc-700 hover:bg-zinc-800 text-white font-bold rounded touch-action-manipulation" style="min-width: 44px; min-height: 44px; z-index: 1000;">
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
     </button>
   </div>
@@ -146,30 +146,5 @@
   <audio id="alarmSound" src="bell-ring-01.wav" preload="auto"></audio>
 
   <script src="script.js" defer></script>
-  <script>
-    const robotBtn = document.getElementById('robotBtn');
-    const chatContainer = document.getElementById('chatContainer');
-    const closeChat = document.getElementById('closeChat');
-
-    robotBtn.addEventListener('click', () => {
-      chatContainer.style.display = chatContainer.style.display === 'none' ? 'block' : 'none';
-    });
-
-    closeChat.addEventListener('click', () => {
-      chatContainer.style.display = 'none';
-    });
-
-    function updateRealTime() {
-      const now = new Date();
-      const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-      const day = String(now.getDate()).padStart(2, '0');
-      const month = months[now.getMonth()];
-      const year = now.getFullYear();
-      document.getElementById("realClock").textContent = now.toLocaleTimeString();
-      document.getElementById("realDate").textContent = `${day} ${month} ${year}`;
-    }
-    setInterval(updateRealTime, 1000);
-    updateRealTime();
-  </script>
 </body>
 </html>

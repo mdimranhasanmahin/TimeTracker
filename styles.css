@@ -31,10 +31,12 @@ html, body {
   overflow-y: auto;
   z-index: 40;
   display: none !important;
+  visibility: hidden !important;
 }
 
 #dashboardModal.active, #settingsModal.active, #scannerModal.active, #timeModal.active {
   display: flex !important;
+  visibility: visible !important;
 }
 
 /* Today Usage and Daily Average Animation */
@@ -69,6 +71,16 @@ html, body {
   touch-action: manipulation;
   z-index: 1000;
   cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Real Time Display */
+#realTime {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0;
 }
 
 /* Animations */
@@ -91,6 +103,10 @@ html, body {
   #dashboardModal, #settingsModal, #scannerModal, #timeModal {
     max-width: 50%;
     padding: 20px;
+  }
+  #realTime {
+    flex-direction: column;
+    align-items: flex-end;
   }
 }
 
@@ -116,6 +132,10 @@ html, body {
     max-width: 90%;
     padding: 15px;
   }
+  #realTime {
+    flex-direction: column;
+    align-items: flex-end;
+  }
 }
 
 @media (max-width: 393px) {
@@ -129,6 +149,10 @@ html, body {
   .text-xl { font-size: 1.25rem; }
   .text-lg { font-size: 1rem; }
   .space-x-4 { gap: 0.5rem; }
+  #realTime {
+    flex-direction: column;
+    align-items: flex-end;
+  }
 }
 
 body {
