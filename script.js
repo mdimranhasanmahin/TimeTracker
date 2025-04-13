@@ -19,6 +19,24 @@ document.addEventListener('DOMContentLoaded', () => {
   let lastUpdatedDate = localStorage.getItem("lastUpdatedDate") || '';
   let stream = null;
 
+  // Real-Time Clock Update
+  function updateRealTime() {
+    const now = new Date();
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = months[now.getMonth()];
+    const year = now.getFullYear();
+    const realClock = document.getElementById("realClock");
+    const realDate = document.getElementById("realDate");
+    if (realClock && realDate) {
+      realClock.textContent = now.toLocaleTimeString();
+      realDate.textContent = `${day} ${month} ${year}`;
+    }
+    // Schedule next update
+    setTimeout(updateRealTime, 1000);
+  }
+  updateRealTime(); // Start the clock
+
   // Initialize modals to hidden state
   function initializeModals() {
     const modals = ['timeModal', 'dashboardModal', 'settingsModal', 'scannerModal'];
@@ -346,13 +364,14 @@ document.addEventListener('DOMContentLoaded', () => {
     hideModal("dashboardModal");
   });
 
-  document.getElementById("settingsBtn").addEventListener("click", () => {
+  // Unified Settings Button Handler for Click and Touch
+  const settingsBtn = document.getElementById("settingsBtn");
+  settingsBtn.addEventListener("click", (e) => {
     showModal("settingsModal");
     document.getElementById("soundToggle").checked = soundEnabled;
   });
-
-  document.getElementById("settingsBtn").addEventListener("touchstart", (e) => {
-    e.preventDefault();
+  settingsBtn.addEventListener("touchstart", (e) => {
+    e.preventDefault(); // Prevent double-firing on mobile
     showModal("settingsModal");
     document.getElementById("soundToggle").checked = soundEnabled;
   });
@@ -365,6 +384,19 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById("soundToggle").addEventListener("change", (e) => {
     soundEnabled = e.target.checked;
     localStorage.setItem("soundEnabled", soundEnabled);
+  });
+
+  // Chat Button Logic
+  const robotBtn = document.getElementById('robotBtn');
+  const chatContainer = document.getElementById('chatContainer');
+  const closeChat = document.getElementById('closeChat');
+
+  robotBtn.addEventListener('click', () => {
+    chatContainer.classList.toggle('hidden');
+  });
+
+  closeChat.addEventListener('click', () => {
+    chatContainer.classList.add('hidden');
   });
 
   setInterval(checkNewDay, 60000);

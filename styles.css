@@ -25,6 +25,18 @@ html, body {
   max-width: 90%;
 }
 
+/* Real Time Display */
+#realTime {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  text-align: right;
+  font-size: 0.875rem;
+  font-family: monospace;
+  opacity: 0.7;
+  z-index: 1000; /* Ensure it stays above modals */
+}
+
 /* Dashboard, Settings, and Scanner Modal */
 #dashboardModal, #settingsModal, #scannerModal, #timeModal {
   max-width: 90%;
@@ -69,6 +81,7 @@ html, body {
   touch-action: manipulation;
   z-index: 1000;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
 }
 
 /* Animations */
@@ -92,6 +105,9 @@ html, body {
     max-width: 50%;
     padding: 20px;
   }
+  #realTime {
+    font-size: 1rem;
+  }
 }
 
 @media (min-width: 1024px) {
@@ -106,6 +122,11 @@ html, body {
   body {
     background-color: #1A1A1A !important;
   }
+  #realTime {
+    top: 0.5rem;
+    right: 0.5rem;
+    font-size: 0.75rem;
+  }
   #chatContainer {
     width: 90% !important;
     height: 80vh !important;
@@ -116,6 +137,10 @@ html, body {
     max-width: 90%;
     padding: 15px;
   }
+  #settingsBtn, #dashboardBtn {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
 }
 
 @media (max-width: 393px) {
@@ -125,6 +150,9 @@ html, body {
   }
   #timerDisplay {
     font-size: clamp(3rem, 10vw, 4.5rem);
+  }
+  #realTime {
+    font-size: 0.65rem;
   }
   .text-xl { font-size: 1.25rem; }
   .text-lg { font-size: 1rem; }
