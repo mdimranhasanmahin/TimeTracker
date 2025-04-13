@@ -10,7 +10,7 @@ html, body {
   height: 100%;
   width: 100%;
   font-family: 'Courier New', Courier, monospace;
-  color: #ffffff;
+  color: #ffffff !important;
   overflow-x: hidden;
 }
 
@@ -125,8 +125,6 @@ html, body {
 body {
   font-family: 'Courier New', Courier, monospace;
   background-color: #1A1A1A !important;
-  -webkit-background-color: #1A1A1A !important;
-  -moz-background-color: #1A1A1A !important;
   color: #ffffff;
   overflow-x: hidden;
   margin: 0;
@@ -139,8 +137,6 @@ body {
 @media (max-width: 768px) {
   body {
     background-color: #1A1A1A !important;
-    -webkit-background-color: #1A1A1A !important;
-    -moz-background-color: #1A1A1A !important;
   }
   #chatContainer {
     width: 380px !important;
