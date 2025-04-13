@@ -25,7 +25,7 @@ html, body {
   max-width: 90%;
 }
 
-/* Dashboard, Settings, and Scanner Modal */
+/* Dashboard, Settings, Scanner, and Time Modal */
 #dashboardModal, #settingsModal, #scannerModal, #timeModal {
   max-width: 90%;
   overflow-y: auto;

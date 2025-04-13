@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (modal) {
         modal.style.display = 'none';
         modal.classList.remove('active');
+        modal.style.visibility = 'hidden'; // Extra layer to prevent flashes
       }
     });
   }
@@ -37,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById(modalId);
     if (modal) {
       modal.style.display = 'flex';
+      modal.style.visibility = 'visible';
       modal.classList.add('active');
     }
   }
@@ -46,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById(modalId);
     if (modal) {
       modal.style.display = 'none';
+      modal.style.visibility = 'hidden';
       modal.classList.remove('active');
     }
   }
@@ -148,7 +151,6 @@ document.addEventListener('DOMContentLoaded', () => {
       localStorage.setItem("lastUpdatedDate", today);
 
       calculateDailyAverage();
-      updateDashboard(0);
     }
   }
 
@@ -346,12 +348,8 @@ document.addEventListener('DOMContentLoaded', () => {
     hideModal("dashboardModal");
   });
 
-  document.getElementById("settingsBtn").addEventListener("click", () => {
-    showModal("settingsModal");
-    document.getElementById("soundToggle").checked = soundEnabled;
-  });
-
-  document.getElementById("settingsBtn").addEventListener("touchstart", (e) => {
+  // Unified Settings button handler
+  document.getElementById("settingsBtn").addEventListener("pointerdown", (e) => {
     e.preventDefault();
     showModal("settingsModal");
     document.getElementById("soundToggle").checked = soundEnabled;
@@ -365,6 +363,15 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById("soundToggle").addEventListener("change", (e) => {
     soundEnabled = e.target.checked;
     localStorage.setItem("soundEnabled", soundEnabled);
+  });
+
+  document.getElementById("restartBtn").addEventListener("click", () => {
+    hours = savedHours;
+    minutes = savedMinutes;
+    seconds = savedSeconds;
+    updateTimerDisplay();
+    saveTimerState();
+    clearInterval(timerInterval);
   });
 
   setInterval(checkNewDay, 60000);
