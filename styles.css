@@ -10,7 +10,7 @@ html, body {
   height: 100%;
   width: 100%;
   font-family: 'Courier New', Courier, monospace;
-  color: #ffffff !important;
+  color: #ffffff;
   overflow-x: hidden;
 }
 
@@ -26,10 +26,15 @@ html, body {
 }
 
 /* Dashboard, Settings, and Scanner Modal */
-#dashboardModal, #settingsModal, #scannerModal {
+#dashboardModal, #settingsModal, #scannerModal, #timeModal {
   max-width: 90%;
   overflow-y: auto;
   z-index: 40;
+  display: none !important;
+}
+
+#dashboardModal.active, #settingsModal.active, #scannerModal.active, #timeModal.active {
+  display: flex !important;
 }
 
 /* Today Usage and Daily Average Animation */
@@ -59,9 +64,11 @@ html, body {
   background-color: #000;
 }
 
-/* Hidden Class */
-.hidden {
-  display: none !important;
+/* Settings and Dashboard Buttons */
+#settingsBtn, #dashboardBtn {
+  touch-action: manipulation;
+  z-index: 1000;
+  cursor: pointer;
 }
 
 /* Animations */
@@ -81,14 +88,14 @@ html, body {
     width: 380px !important;
     height: 475px !important;
   }
-  #dashboardModal, #settingsModal, #scannerModal {
+  #dashboardModal, #settingsModal, #scannerModal, #timeModal {
     max-width: 50%;
     padding: 20px;
   }
 }
 
 @media (min-width: 1024px) {
-  #dashboardModal, #settingsModal, #scannerModal {
+  #dashboardModal, #settingsModal, #scannerModal, #timeModal {
     max-width: 40%;
     padding: 16px;
   }
@@ -96,10 +103,8 @@ html, body {
 
 /* Media Queries: Mobile Screens */
 @media (max-width: 768px) {
-  #dashboardModal, #settingsModal, #scannerModal {
-    max-width: 90%;
-    padding: 15px;
-    overflow-y: auto;
+  body {
+    background-color: #1A1A1A !important;
   }
   #chatContainer {
     width: 90% !important;
@@ -107,10 +112,14 @@ html, body {
     right: 0.5rem;
     bottom: 0.5rem;
   }
+  #dashboardModal, #settingsModal, #scannerModal, #timeModal {
+    max-width: 90%;
+    padding: 15px;
+  }
 }
 
 @media (max-width: 393px) {
-  #dashboardModal, #settingsModal, #scannerModal {
+  #dashboardModal, #settingsModal, #scannerModal, #timeModal {
     max-width: 100%;
     padding: 10px;
   }
@@ -123,7 +132,6 @@ html, body {
 }
 
 body {
-  font-family: 'Courier New', Courier, monospace;
   background-color: #1A1A1A !important;
   color: #ffffff;
   overflow-x: hidden;
@@ -132,29 +140,4 @@ body {
   height: 100vh;
   width: 100vw;
   animation: fadeIn 0.5s ease-in;
-}
-
-@media (max-width: 768px) {
-  body {
-    background-color: #1A1A1A !important;
-  }
-  #chatContainer {
-    width: 380px !important;
-    height: 475px !important;
-  }
-  #dashboardModal, #settingsModal, #scannerModal {
-    max-width: 90%;
-    padding: 15px;
-  }
-}
-
-@media (max-width: 393px) {
-  #dashboardModal, #settingsModal, #scannerModal {
-    max-width: 100%;
-    padding: 10px;
-  }
-  .text-xl { font-size: 1.25rem; }
-  .text-lg { font-size: 1rem; }
-  .space-x-4 { gap: 0.5rem; }
-  #timerDisplay { font-size: 4.5rem; }
 }

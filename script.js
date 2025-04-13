@@ -19,6 +19,37 @@ document.addEventListener('DOMContentLoaded', () => {
   let lastUpdatedDate = localStorage.getItem("lastUpdatedDate") || '';
   let stream = null;
 
+  // Initialize modals to hidden state
+  function initializeModals() {
+    const modals = ['timeModal', 'dashboardModal', 'settingsModal', 'scannerModal'];
+    modals.forEach(id => {
+      const modal = document.getElementById(id);
+      if (modal) {
+        modal.style.display = 'none';
+        modal.classList.remove('active');
+      }
+    });
+  }
+
+  // Show a modal
+  function showModal(modalId) {
+    initializeModals(); // Hide all other modals
+    const modal = document.getElementById(modalId);
+    if (modal) {
+      modal.style.display = 'flex';
+      modal.classList.add('active');
+    }
+  }
+
+  // Hide a modal
+  function hideModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+      modal.style.display = 'none';
+      modal.classList.remove('active');
+    }
+  }
+
   function loadTimerState() {
     hours = parseInt(localStorage.getItem("hours")) || 0;
     minutes = parseInt(localStorage.getItem("minutes")) || 0;
@@ -118,8 +149,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
       calculateDailyAverage();
       updateDashboard(0);
-      monthlyChart.data.datasets[0].data = monthlyUsage;
-      monthlyChart.update();
     }
   }
 
@@ -190,7 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById("generateQRBtn").addEventListener("click", () => {
     const qrCodeContainer = document.getElementById("qrCodeContainer");
     qrCodeContainer.innerHTML = '';
-    qrCodeContainer.classList.remove("hidden");
+    qrCodeContainer.style.display = 'block';
     const data = getLocalStorageData();
     QRCode.toCanvas(data, { width: 200 }, (err, canvas) => {
       if (err) console.error(err);
@@ -198,7 +227,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // QR Scanner Logic
   async function startScanner() {
     try {
       stream = await navigator.mediaDevices.getUserMedia({
@@ -211,7 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (err) {
       console.error("Error accessing camera:", err);
       alert("Unable to access camera. Please check permissions.");
-      closeScanner();
+      hideModal("scannerModal");
     }
   }
 
@@ -237,7 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (code) {
           setLocalStorageData(code.data);
           alert("Data imported successfully!");
-          closeScanner();
+          hideModal("scannerModal");
           return;
         }
       }
@@ -246,17 +274,15 @@ document.addEventListener('DOMContentLoaded', () => {
     tick();
   }
 
-  function closeScanner() {
-    stopScanner();
-    document.getElementById("scannerModal").classList.add("hidden");
-  }
-
   document.getElementById("scanQRBtn").addEventListener("click", () => {
-    document.getElementById("scannerModal").classList.remove("hidden");
+    showModal("scannerModal");
     startScanner();
   });
 
-  document.getElementById("closeScannerBtn").addEventListener("click", closeScanner);
+  document.getElementById("closeScannerBtn").addEventListener("click", () => {
+    stopScanner();
+    hideModal("scannerModal");
+  });
 
   document.getElementById("qrFileInput").addEventListener("change", (e) => {
     const file = e.target.files[0];
@@ -283,14 +309,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById("startBtn").addEventListener("click", () => {
     if (hours === 0 && minutes === 0 && seconds === 0) {
-      document.getElementById("timeModal").classList.remove("hidden");
+      showModal("timeModal");
     } else {
       startTimer();
     }
   });
 
   document.getElementById("setTimeBtn").addEventListener("click", () => {
-    document.getElementById("timeModal").classList.remove("hidden");
+    showModal("timeModal");
   });
 
   document.getElementById("saveTimeBtn").addEventListener("click", () => {
@@ -301,44 +327,39 @@ document.addEventListener('DOMContentLoaded', () => {
     minutes = savedMinutes;
     seconds = savedSeconds;
     saveTimerState();
-    document.getElementById("timeModal").classList.add("hidden");
+    hideModal("timeModal");
     updateTimerDisplay();
   });
 
   document.getElementById("closeModalBtn").addEventListener("click", () => {
-    document.getElementById("timeModal").classList.add("hidden");
+    hideModal("timeModal");
   });
 
   document.getElementById("dashboardBtn").addEventListener("click", () => {
-    const dashboard = document.getElementById("dashboardModal");
-    dashboard.classList.remove("hidden");
-    dashboard.classList.add("flex", "items-center", "justify-center");
+    showModal("dashboardModal");
     updateDashboard(0);
     monthlyChart.data.datasets[0].data = monthlyUsage;
     monthlyChart.update();
   });
 
   document.getElementById("closeDashboardBtn").addEventListener("click", () => {
-    document.getElementById("dashboardModal").classList.add("hidden");
-  });
-
-  document.getElementById("restartBtn").addEventListener("click", () => {
-    clearInterval(timerInterval);
-    hours = savedHours;
-    minutes = savedMinutes;
-    seconds = savedSeconds;
-    updateTimerDisplay();
+    hideModal("dashboardModal");
   });
 
   document.getElementById("settingsBtn").addEventListener("click", () => {
-    const settingsModal = document.getElementById("settingsModal");
-    settingsModal.classList.remove("hidden");
+    showModal("settingsModal");
+    document.getElementById("soundToggle").checked = soundEnabled;
+  });
+
+  document.getElementById("settingsBtn").addEventListener("touchstart", (e) => {
+    e.preventDefault();
+    showModal("settingsModal");
     document.getElementById("soundToggle").checked = soundEnabled;
   });
 
   document.getElementById("closeSettingsBtn").addEventListener("click", () => {
-    document.getElementById("settingsModal").classList.add("hidden");
-    document.getElementById("qrCodeContainer").classList.add("hidden");
+    hideModal("settingsModal");
+    document.getElementById("qrCodeContainer").style.display = "none";
   });
 
   document.getElementById("soundToggle").addEventListener("change", (e) => {
@@ -348,8 +369,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   setInterval(checkNewDay, 60000);
 
+  // Initialize state
+  initializeModals();
   loadTimerState();
   checkNewDay();
   updateTimerDisplay();
-  updateDashboard(0);
 });
