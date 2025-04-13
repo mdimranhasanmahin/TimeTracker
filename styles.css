@@ -25,8 +25,8 @@ html, body {
   max-width: 90%;
 }
 
-/* Dashboard and Settings Modal */
-#dashboardModal, #settingsModal {
+/* Dashboard, Settings, and Scanner Modal */
+#dashboardModal, #settingsModal, #scannerModal {
   max-width: 90%;
   overflow-y: auto;
   z-index: 40;
@@ -52,6 +52,13 @@ html, body {
   z-index: 30;
 }
 
+/* Scanner Video */
+#scannerVideo {
+  width: 100%;
+  height: auto;
+  background-color: #000;
+}
+
 /* Hidden Class */
 .hidden {
   display: none !important;
@@ -74,14 +81,14 @@ html, body {
     width: 380px !important;
     height: 475px !important;
   }
-  #dashboardModal, #settingsModal {
+  #dashboardModal, #settingsModal, #scannerModal {
     max-width: 50%;
     padding: 20px;
   }
 }
 
 @media (min-width: 1024px) {
-  #dashboardModal, #settingsModal {
+  #dashboardModal, #settingsModal, #scannerModal {
     max-width: 40%;
     padding: 16px;
   }
@@ -89,7 +96,7 @@ html, body {
 
 /* Media Queries: Mobile Screens */
 @media (max-width: 768px) {
-  #dashboardModal, #settingsModal {
+  #dashboardModal, #settingsModal, #scannerModal {
     max-width: 90%;
     padding: 15px;
     overflow-y: auto;
@@ -103,7 +110,7 @@ html, body {
 }
 
 @media (max-width: 393px) {
-  #dashboardModal, #settingsModal {
+  #dashboardModal, #settingsModal, #scannerModal {
     max-width: 100%;
     padding: 10px;
   }
@@ -113,4 +120,45 @@ html, body {
   .text-xl { font-size: 1.25rem; }
   .text-lg { font-size: 1rem; }
   .space-x-4 { gap: 0.5rem; }
+}
+
+body {
+  font-family: 'Courier New', Courier, monospace;
+  background-color: #1A1A1A !important;
+  -webkit-background-color: #1A1A1A !important;
+  -moz-background-color: #1A1A1A !important;
+  color: #ffffff;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
+  animation: fadeIn 0.5s ease-in;
+}
+
+@media (max-width: 768px) {
+  body {
+    background-color: #1A1A1A !important;
+    -webkit-background-color: #1A1A1A !important;
+    -moz-background-color: #1A1A1A !important;
+  }
+  #chatContainer {
+    width: 380px !important;
+    height: 475px !important;
+  }
+  #dashboardModal, #settingsModal, #scannerModal {
+    max-width: 90%;
+    padding: 15px;
+  }
+}
+
+@media (max-width: 393px) {
+  #dashboardModal, #settingsModal, #scannerModal {
+    max-width: 100%;
+    padding: 10px;
+  }
+  .text-xl { font-size: 1.25rem; }
+  .text-lg { font-size: 1rem; }
+  .space-x-4 { gap: 0.5rem; }
+  #timerDisplay { font-size: 4.5rem; }
 }

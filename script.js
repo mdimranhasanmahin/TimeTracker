@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let timerInterval, hours, minutes, seconds;
   let savedHours = 0, savedMinutes = 0, savedSeconds = 0;
-  let soundEnabled = localStorage.getItem('soundEnabled') !== 'false'; // Default true
+  let soundEnabled = localStorage.getItem('soundEnabled') !== 'false';
   const todayUsageEl = document.getElementById("todayUsage");
   const dailyAverageEl = document.getElementById("dailyAverage");
   const monthlyChartEl = document.getElementById("monthlyChart");
@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let totalThisYearUsage = parseInt(localStorage.getItem("totalThisYearUsage")) || 0;
   let totalDays = parseInt(localStorage.getItem("totalDays")) || 0;
   let lastUpdatedDate = localStorage.getItem("lastUpdatedDate") || '';
+  let stream = null;
 
   function loadTimerState() {
     hours = parseInt(localStorage.getItem("hours")) || 0;
@@ -129,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
       datasets: [{
         label: 'Study Time (Minutes)',
         data: monthlyUsage,
-        backgroundColor: 'rgba(0, 123, 255, 0.7)', // Blue-600
+        backgroundColor: 'rgba(0, 123, 255, 0.7)',
         borderColor: 'rgba(0, 123, 255, 1)',
         borderWidth: 1
       }]
@@ -163,22 +164,27 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function setLocalStorageData(data) {
-    const parsedData = JSON.parse(data);
-    for (const key in parsedData) {
-      localStorage.setItem(key, parsedData[key]);
+    try {
+      const parsedData = JSON.parse(data);
+      for (const key in parsedData) {
+        localStorage.setItem(key, parsedData[key]);
+      }
+      todayUsage = parseInt(localStorage.getItem("todayUsage")) || 0;
+      dailyAverage = parseFloat(localStorage.getItem("dailyAverage")) || 0;
+      monthlyUsage = JSON.parse(localStorage.getItem("monthlyUsage")) || Array(12).fill(0);
+      totalThisYearUsage = parseInt(localStorage.getItem("totalThisYearUsage")) || 0;
+      totalDays = parseInt(localStorage.getItem("totalDays")) || 0;
+      lastUpdatedDate = localStorage.getItem("lastUpdatedDate") || '';
+      soundEnabled = localStorage.getItem('soundEnabled') !== 'false';
+      loadTimerState();
+      updateTimerDisplay();
+      updateDashboard(0);
+      monthlyChart.data.datasets[0].data = monthlyUsage;
+      monthlyChart.update();
+    } catch (e) {
+      console.error("Error parsing QR code data:", e);
+      alert("Invalid QR code data.");
     }
-    todayUsage = parseInt(localStorage.getItem("todayUsage")) || 0;
-    dailyAverage = parseFloat(localStorage.getItem("dailyAverage")) || 0;
-    monthlyUsage = JSON.parse(localStorage.getItem("monthlyUsage")) || Array(12).fill(0);
-    totalThisYearUsage = parseInt(localStorage.getItem("totalThisYearUsage")) || 0;
-    totalDays = parseInt(localStorage.getItem("totalDays")) || 0;
-    lastUpdatedDate = localStorage.getItem("lastUpdatedDate") || '';
-    soundEnabled = localStorage.getItem('soundEnabled') !== 'false';
-    loadTimerState();
-    updateTimerDisplay();
-    updateDashboard(0);
-    monthlyChart.data.datasets[0].data = monthlyUsage;
-    monthlyChart.update();
   }
 
   document.getElementById("generateQRBtn").addEventListener("click", () => {
@@ -192,9 +198,65 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // QR Scanner Logic
+  async function startScanner() {
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'environment' }
+      });
+      const video = document.getElementById("scannerVideo");
+      video.srcObject = stream;
+      video.play();
+      scanQRCode();
+    } catch (err) {
+      console.error("Error accessing camera:", err);
+      alert("Unable to access camera. Please check permissions.");
+      closeScanner();
+    }
+  }
+
+  function stopScanner() {
+    if (stream) {
+      stream.getTracks().forEach(track => track.stop());
+      stream = null;
+    }
+  }
+
+  function scanQRCode() {
+    const video = document.getElementById("scannerVideo");
+    const canvas = document.getElementById("scannerCanvas");
+    const ctx = canvas.getContext("2d");
+
+    function tick() {
+      if (video.readyState === video.HAVE_ENOUGH_DATA) {
+        canvas.height = video.videoHeight;
+        canvas.width = video.videoWidth;
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const code = jsQR(imageData.data, imageData.width, imageData.height);
+        if (code) {
+          setLocalStorageData(code.data);
+          alert("Data imported successfully!");
+          closeScanner();
+          return;
+        }
+      }
+      requestAnimationFrame(tick);
+    }
+    tick();
+  }
+
+  function closeScanner() {
+    stopScanner();
+    document.getElementById("scannerModal").classList.add("hidden");
+  }
+
   document.getElementById("scanQRBtn").addEventListener("click", () => {
-    document.getElementById("qrFileInput").click();
+    document.getElementById("scannerModal").classList.remove("hidden");
+    startScanner();
   });
+
+  document.getElementById("closeScannerBtn").addEventListener("click", closeScanner);
 
   document.getElementById("qrFileInput").addEventListener("change", (e) => {
     const file = e.target.files[0];
@@ -284,7 +346,7 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem("soundEnabled", soundEnabled);
   });
 
-  setInterval(checkNewDay, 60000); // Check every minute 
+  setInterval(checkNewDay, 60000);
 
   loadTimerState();
   checkNewDay();
