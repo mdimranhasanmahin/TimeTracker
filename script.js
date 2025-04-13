@@ -32,10 +32,9 @@ document.addEventListener('DOMContentLoaded', () => {
       realClock.textContent = now.toLocaleTimeString();
       realDate.textContent = `${day} ${month} ${year}`;
     }
-    // Schedule next update
     setTimeout(updateRealTime, 1000);
   }
-  updateRealTime(); // Start the clock
+  updateRealTime();
 
   // Initialize modals to hidden state
   function initializeModals() {
@@ -51,11 +50,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Show a modal
   function showModal(modalId) {
-    initializeModals(); // Hide all other modals
+    initializeModals();
     const modal = document.getElementById(modalId);
     if (modal) {
       modal.style.display = 'flex';
       modal.classList.add('active');
+      console.log(`Opened modal: ${modalId}`); // Debug log
     }
   }
 
@@ -65,6 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (modal) {
       modal.style.display = 'none';
       modal.classList.remove('active');
+      console.log(`Closed modal: ${modalId}`); // Debug log
     }
   }
 
@@ -364,16 +365,18 @@ document.addEventListener('DOMContentLoaded', () => {
     hideModal("dashboardModal");
   });
 
-  // Unified Settings Button Handler for Click and Touch
+  // Settings Button Handler with PointerDown
   const settingsBtn = document.getElementById("settingsBtn");
-  settingsBtn.addEventListener("click", (e) => {
-    showModal("settingsModal");
-    document.getElementById("soundToggle").checked = soundEnabled;
-  });
-  settingsBtn.addEventListener("touchstart", (e) => {
-    e.preventDefault(); // Prevent double-firing on mobile
-    showModal("settingsModal");
-    document.getElementById("soundToggle").checked = soundEnabled;
+  let isOpening = false; // Prevent double-tap issues
+  settingsBtn.addEventListener("pointerdown", (e) => {
+    e.preventDefault(); // Prevent default behaviors
+    if (!isOpening) {
+      isOpening = true;
+      console.log("Settings button triggered"); // Debug log
+      showModal("settingsModal");
+      document.getElementById("soundToggle").checked = soundEnabled;
+      setTimeout(() => { isOpening = false; }, 300); // Reset after delay
+    }
   });
 
   document.getElementById("closeSettingsBtn").addEventListener("click", () => {
