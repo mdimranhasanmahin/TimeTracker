@@ -32,10 +32,9 @@ document.addEventListener('DOMContentLoaded', () => {
       realClock.textContent = now.toLocaleTimeString();
       realDate.textContent = `${day} ${month} ${year}`;
     }
-    // Schedule next update
-    setTimeout(updateRealTime, 1000);
   }
-  updateRealTime(); // Start the clock
+  setInterval(updateRealTime, 1000); // Continuous clock update
+  updateRealTime();
 
   // Initialize modals to hidden state
   function initializeModals() {
@@ -51,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Show a modal
   function showModal(modalId) {
-    initializeModals(); // Hide all other modals
+    initializeModals();
     const modal = document.getElementById(modalId);
     if (modal) {
       modal.style.display = 'flex';
@@ -364,14 +363,13 @@ document.addEventListener('DOMContentLoaded', () => {
     hideModal("dashboardModal");
   });
 
-  // Unified Settings Button Handler for Click and Touch
   const settingsBtn = document.getElementById("settingsBtn");
   settingsBtn.addEventListener("click", (e) => {
     showModal("settingsModal");
     document.getElementById("soundToggle").checked = soundEnabled;
   });
   settingsBtn.addEventListener("touchstart", (e) => {
-    e.preventDefault(); // Prevent double-firing on mobile
+    e.preventDefault();
     showModal("settingsModal");
     document.getElementById("soundToggle").checked = soundEnabled;
   });
@@ -397,6 +395,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   closeChat.addEventListener('click', () => {
     chatContainer.classList.add('hidden');
+  });
+
+  // Restart Button Logic
+  document.getElementById("restartBtn").addEventListener("click", () => {
+    hours = savedHours;
+    minutes = savedMinutes;
+    seconds = savedSeconds;
+    clearInterval(timerInterval);
+    saveTimerState();
+    updateTimerDisplay();
   });
 
   setInterval(checkNewDay, 60000);
