@@ -124,7 +124,7 @@ html, body {
     font-size: 1rem;
     display: flex !important;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.2rem;
   }
   #realClock, #realDate {
     display: block;
@@ -160,7 +160,7 @@ html, body {
   }
   #chatContainer {
     width: 90% !important;
-    height: 80vh !important;
+    height: 60vh !important; /* Reduced height for mobile */
     right: 0.5rem;
     bottom: 0.5rem;
   }
@@ -171,6 +171,18 @@ html, body {
   #settingsBtn, #dashboardBtn {
     padding: 0.5rem 1rem;
     font-size: 0.875rem;
+  }
+  /* Reduce size of Set Time, Start, and Restart buttons */
+  #setTimeBtn, #startBtn {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+  #restartBtn {
+    padding: 0.5rem;
+  }
+  #restartBtn svg {
+    width: 18px;
+    height: 18px;
   }
 }
 
@@ -187,7 +199,7 @@ html, body {
     font-size: 0.65rem;
     display: flex !important;
     flex-direction: column;
-    gap: 0.3rem;
+    gap: 0.1rem;
   }
   #realClock, #realDate {
     display: block;
@@ -197,6 +209,18 @@ html, body {
   .text-xl { font-size: 1.25rem; }
   .text-lg { font-size: 1rem; }
   .space-x-4 { gap: 0.5rem; }
+  /* Further reduce size of Set Time, Start, and Restart buttons */
+  #setTimeBtn, #startBtn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.75rem;
+  }
+  #restartBtn {
+    padding: 0.4rem;
+  }
+  #restartBtn svg {
+    width: 16px;
+    height: 16px;
+  }
 }
 
 body {

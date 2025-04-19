@@ -106,35 +106,39 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateUsage(startTime) {
     const endTime = new Date();
     const sessionMinutes = Math.floor((endTime - startTime) / 60000);
-    todayUsage += sessionMinutes;
-    monthlyUsage[new Date().getMonth()] += sessionMinutes;
-    totalThisYearUsage += sessionMinutes;
-
-    localStorage.setItem("todayUsage", todayUsage);
-    localStorage.setItem("monthlyUsage", JSON.stringify(monthlyUsage));
-    localStorage.setItem("totalThisYearUsage", totalThisYearUsage);
-    calculateDailyAverage();
-    updateDashboard(sessionMinutes);
-    monthlyChart.data.datasets[0].data = monthlyUsage;
-    monthlyChart.update();
+    if (sessionMinutes > 0) {
+      todayUsage += sessionMinutes;
+      monthlyUsage[new Date().getMonth()] += sessionMinutes;
+      totalThisYearUsage += sessionMinutes;
+      localStorage.setItem("todayUsage", todayUsage);
+      localStorage.setItem("monthlyUsage", JSON.stringify(monthlyUsage));
+      localStorage.setItem("totalThisYearUsage", totalThisYearUsage);
+      calculateDailyAverage();
+      updateDashboard(sessionMinutes);
+      monthlyChart.data.datasets[0].data = monthlyUsage;
+      monthlyChart.update();
+    }
   }
 
   function calculateDailyAverage() {
     if (totalDays > 0) {
       dailyAverage = totalThisYearUsage / totalDays;
       localStorage.setItem("dailyAverage", dailyAverage.toFixed(2));
+    } else {
+      dailyAverage = 0;
+      localStorage.setItem("dailyAverage", "0");
     }
   }
 
   function formatTime(totalMinutes) {
     const hours = Math.floor(totalMinutes / 60);
-    const minutes = totalMinutes % 60;
+    const minutes = Math.round(totalMinutes % 60);
     return `${hours} Hr ${minutes} Min`;
   }
 
   function countUp(element, targetMinutes, duration = 1000) {
     let start = 0;
-    const stepTime = Math.abs(Math.floor(duration / targetMinutes)) || 10;
+    const stepTime = Math.abs(Math.floor(duration / (targetMinutes || 1))) || 10;
     const timer = setInterval(() => {
       start += 1;
       element.textContent = formatTime(start);
@@ -153,17 +157,17 @@ document.addEventListener('DOMContentLoaded', () => {
   function checkNewDay() {
     const today = new Date().toDateString();
     if (lastUpdatedDate !== today) {
-      monthlyUsage[new Date().getMonth()] += todayUsage;
-      totalThisYearUsage += todayUsage;
-      totalDays++;
+      if (todayUsage > 0) {
+        monthlyUsage[new Date().getMonth()] += todayUsage;
+        totalThisYearUsage += todayUsage;
+        totalDays++;
+        localStorage.setItem("monthlyUsage", JSON.stringify(monthlyUsage));
+        localStorage.setItem("totalThisYearUsage", totalThisYearUsage);
+        localStorage.setItem("totalDays", totalDays);
+      }
       todayUsage = 0;
-
-      localStorage.setItem("monthlyUsage", JSON.stringify(monthlyUsage));
-      localStorage.setItem("totalThisYearUsage", totalThisYearUsage);
-      localStorage.setItem("totalDays", totalDays);
       localStorage.setItem("todayUsage", todayUsage);
       localStorage.setItem("lastUpdatedDate", today);
-
       calculateDailyAverage();
       updateDashboard(0);
     }
@@ -224,6 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
       soundEnabled = localStorage.getItem('soundEnabled') !== 'false';
       loadTimerState();
       updateTimerDisplay();
+      calculateDailyAverage();
       updateDashboard(0);
       monthlyChart.data.datasets[0].data = monthlyUsage;
       monthlyChart.update();
@@ -282,6 +287,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (code) {
           setLocalStorageData(code.data);
           alert("Data imported successfully!");
+          stopScanner();
           hideModal("scannerModal");
           return;
         }
@@ -354,6 +360,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById("dashboardBtn").addEventListener("click", () => {
     showModal("dashboardModal");
+    calculateDailyAverage(); // Ensure average is recalculated
     updateDashboard(0);
     monthlyChart.data.datasets[0].data = monthlyUsage;
     monthlyChart.update();
