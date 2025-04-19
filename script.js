@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
       realDate.textContent = `${day} ${month} ${year}`;
     }
   }
-  setInterval(updateRealTime, 1000); // Continuous clock update
+  setInterval(updateRealTime, 1000);
   updateRealTime();
 
   // Initialize modals to hidden state
@@ -392,8 +392,16 @@ document.addEventListener('DOMContentLoaded', () => {
   robotBtn.addEventListener('click', () => {
     chatContainer.classList.toggle('hidden');
   });
+  robotBtn.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    chatContainer.classList.toggle('hidden');
+  });
 
   closeChat.addEventListener('click', () => {
+    chatContainer.classList.add('hidden');
+  });
+  closeChat.addEventListener('touchstart', (e) => {
+    e.preventDefault();
     chatContainer.classList.add('hidden');
   });
 

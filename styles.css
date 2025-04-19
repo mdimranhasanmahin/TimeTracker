@@ -16,7 +16,7 @@ html, body {
 
 /* Timer Display */
 #timerDisplay {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', sans-serif !important;
   font-size: clamp(4rem, 11vw, 6.15rem);
   text-align: center;
   white-space: nowrap;
@@ -35,6 +35,15 @@ html, body {
   font-family: monospace;
   opacity: 0.7;
   z-index: 1000;
+  display: flex !important;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+#realClock, #realDate {
+  display: block;
+  width: 100%;
+  text-align: right;
 }
 
 /* Dashboard, Settings, and Scanner Modal */
@@ -66,7 +75,7 @@ html, body {
   border-radius: 0.5rem;
   box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  z-index: 30;
+  z-index: 40;
 }
 
 /* Scanner Video */
@@ -113,6 +122,14 @@ html, body {
   }
   #realTime {
     font-size: 1rem;
+    display: flex !important;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  #realClock, #realDate {
+    display: block;
+    width: 100%;
+    text-align: right;
   }
 }
 
@@ -132,6 +149,14 @@ html, body {
     top: 0.5rem;
     right: 0.5rem;
     font-size: 0.75rem;
+    display: flex !important;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  #realClock, #realDate {
+    display: block;
+    width: 100%;
+    text-align: right;
   }
   #chatContainer {
     width: 90% !important;
@@ -156,9 +181,18 @@ html, body {
   }
   #timerDisplay {
     font-size: clamp(3rem, 10vw, 4.5rem);
+    font-family: 'Inter', sans-serif !important;
   }
   #realTime {
     font-size: 0.65rem;
+    display: flex !important;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  #realClock, #realDate {
+    display: block;
+    width: 100%;
+    text-align: right;
   }
   .text-xl { font-size: 1.25rem; }
   .text-lg { font-size: 1rem; }
