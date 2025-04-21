@@ -71,12 +71,18 @@ document.addEventListener('DOMContentLoaded', () => {
     hours = parseInt(localStorage.getItem("hours")) || 0;
     minutes = parseInt(localStorage.getItem("minutes")) || 0;
     seconds = parseInt(localStorage.getItem("seconds")) || 0;
+    savedHours = parseInt(localStorage.getItem("savedHours")) || 0;
+    savedMinutes = parseInt(localStorage.getItem("savedMinutes")) || 0;
+    savedSeconds = parseInt(localStorage.getItem("savedSeconds")) || 0;
   }
 
   function saveTimerState() {
     localStorage.setItem("hours", hours);
     localStorage.setItem("minutes", minutes);
     localStorage.setItem("seconds", seconds);
+    localStorage.setItem("savedHours", savedHours);
+    localStorage.setItem("savedMinutes", savedMinutes);
+    localStorage.setItem("savedSeconds", savedSeconds);
   }
 
   function updateTimerDisplay() {
@@ -105,16 +111,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function updateUsage(startTime) {
     const endTime = new Date();
-    const sessionMinutes = Math.floor((endTime - startTime) / 60000);
+    const sessionSeconds = Math.floor((endTime - startTime) / 1000);
+    const sessionMinutes = Math.floor(sessionSeconds / 60);
     if (sessionMinutes > 0) {
       todayUsage += sessionMinutes;
       monthlyUsage[new Date().getMonth()] += sessionMinutes;
       totalThisYearUsage += sessionMinutes;
+      if (lastUpdatedDate !== new Date().toDateString()) {
+        totalDays++;
+        localStorage.setItem("totalDays", totalDays);
+      }
       localStorage.setItem("todayUsage", todayUsage);
       localStorage.setItem("monthlyUsage", JSON.stringify(monthlyUsage));
       localStorage.setItem("totalThisYearUsage", totalThisYearUsage);
+      localStorage.setItem("lastUpdatedDate", new Date().toDateString());
       calculateDailyAverage();
-      updateDashboard(sessionMinutes);
+      updateDashboard();
       monthlyChart.data.datasets[0].data = monthlyUsage;
       monthlyChart.update();
     }
@@ -123,17 +135,16 @@ document.addEventListener('DOMContentLoaded', () => {
   function calculateDailyAverage() {
     if (totalDays > 0) {
       dailyAverage = totalThisYearUsage / totalDays;
-      localStorage.setItem("dailyAverage", dailyAverage.toFixed(2));
     } else {
       dailyAverage = 0;
-      localStorage.setItem("dailyAverage", "0");
     }
+    localStorage.setItem("dailyAverage", dailyAverage.toFixed(2));
   }
 
   function formatTime(totalMinutes) {
     const hours = Math.floor(totalMinutes / 60);
     const minutes = Math.round(totalMinutes % 60);
-    return `${hours} Hr ${minutes} Min`;
+    return hours > 0 ? `${hours} Hr ${minutes} Min` : `${minutes} Min`;
   }
 
   function countUp(element, targetMinutes, duration = 1000) {
@@ -149,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, stepTime);
   }
 
-  function updateDashboard(lastSession) {
+  function updateDashboard() {
     if (todayUsageEl) countUp(todayUsageEl, todayUsage);
     if (dailyAverageEl) countUp(dailyAverageEl, Math.round(dailyAverage));
   }
@@ -157,19 +168,11 @@ document.addEventListener('DOMContentLoaded', () => {
   function checkNewDay() {
     const today = new Date().toDateString();
     if (lastUpdatedDate !== today) {
-      if (todayUsage > 0) {
-        monthlyUsage[new Date().getMonth()] += todayUsage;
-        totalThisYearUsage += todayUsage;
-        totalDays++;
-        localStorage.setItem("monthlyUsage", JSON.stringify(monthlyUsage));
-        localStorage.setItem("totalThisYearUsage", totalThisYearUsage);
-        localStorage.setItem("totalDays", totalDays);
-      }
       todayUsage = 0;
       localStorage.setItem("todayUsage", todayUsage);
       localStorage.setItem("lastUpdatedDate", today);
       calculateDailyAverage();
-      updateDashboard(0);
+      updateDashboard();
     }
   }
 
@@ -229,7 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
       loadTimerState();
       updateTimerDisplay();
       calculateDailyAverage();
-      updateDashboard(0);
+      updateDashboard();
       monthlyChart.data.datasets[0].data = monthlyUsage;
       monthlyChart.update();
     } catch (e) {
@@ -360,8 +363,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById("dashboardBtn").addEventListener("click", () => {
     showModal("dashboardModal");
-    calculateDailyAverage(); // Ensure average is recalculated
-    updateDashboard(0);
+    calculateDailyAverage();
+    updateDashboard();
     monthlyChart.data.datasets[0].data = monthlyUsage;
     monthlyChart.update();
   });
@@ -429,4 +432,5 @@ document.addEventListener('DOMContentLoaded', () => {
   loadTimerState();
   checkNewDay();
   updateTimerDisplay();
+  updateDashboard();
 });
